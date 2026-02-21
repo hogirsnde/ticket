@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Bilet Technologies - پلاتفۆرمی بلیتی دیجیتاڵ بۆ کوردستان">
+<meta name="keywords" content="بلیت، ڕووداو، فڕۆکە، پاس، کونسێرت، کوردستان">
+<meta property="og:title" content="Bilet Technologies | بلیتی دیجیتاڵ">
+<meta property="og:description" content="کڕین و فرۆشتنی بلیتی دیجیتاڵ بە ئاسانترین شێوە">
+<title>Bilet Technologies | بلیتی دیجیتاڵ</title>
+<!-- Fonts: loads Vazirmatn when online, falls back to system Kurdish fonts offline -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+<style id="font-imports">
+/* Kurdish-optimized font stack — fully offline, zero network requests */
+/* Vazirmatn loads from Google Fonts when online, falls back gracefully when offline */
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('Vazirmatn'),
+       local('Vazir'),
+       local('Tahoma'),
+       local('Arial Unicode MS');
+}
+/* Force correct Arabic/Kurdish rendering */
+body, input, button, select, textarea {
+  font-family: 'Vazirmatn', 'Segoe UI', 'Arial Unicode MS', Tahoma, Geneva, Verdana, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+</style>
+<style>
+:root {
+  --green: #22C55E;
+  --green-glow: rgba(34,197,94,0.35);
+  --green-dim: rgba(34,197,94,0.12);
+  --bg: #0B1220;
+  --bg2: #0E1A2B;
+  --bg3: #111827;
+  --card: rgba(255,255,255,0.04);
+  --card-border: rgba(255,255,255,0.08);
+  --card-hover: rgba(255,255,255,0.07);
+  --text: #F0F6FF;
+  --text2: #94A3B8;
+  --text3: #64748B;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-lg: 28px;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  --font: 'Vazirmatn', 'Segoe UI', 'Arial Unicode MS', 'Noto Sans Arabic', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  direction:rtl;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+body.ltr{direction:ltr;text-align:left}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(34,197,94,0.3);border-radius:3px}
+
+/* BG MESH */
+.bg-mesh{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background: 
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(34,197,94,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(56,189,248,0.04) 0%, transparent 60%),
+    linear-gradient(135deg, #0B1220 0%, #0E1A2B 50%, #0B1220 100%);
+}
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+
+/* LAYOUT */
+.page{display:none;min-height:100vh;position:relative;z-index:1}
+.page.active{display:block}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:rgba(11,18,32,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 2rem;
+  height:70px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:var(--transition);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  font-weight:800;font-size:1.3rem;letter-spacing:-0.5px;
+  cursor:pointer;
+  text-decoration:none;color:var(--text);
+}
+.logo-icon{
+  width:38px;height:38px;background:var(--green);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;
+  box-shadow:0 0 20px var(--green-glow);
+}
+.nav-links{display:flex;align-items:center;gap:0.3rem}
+.nav-link{
+  padding:8px 14px;border-radius:var(--radius-sm);
+  color:var(--text2);font-size:0.88rem;font-weight:500;
+  cursor:pointer;transition:var(--transition);text-decoration:none;border:none;background:none;font-family:var(--font);
+}
+.nav-link:hover,.nav-link.active{color:var(--text);background:var(--card)}
+.nav-link.active{color:var(--green)}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.lang-toggle{
+  display:flex;align-items:center;gap:3px;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:20px;padding:4px;flex-shrink:0;
+}
+.lang-btn{
+  padding:4px 10px;border-radius:14px;font-size:0.72rem;font-weight:600;
+  border:none;background:none;color:var(--text2);cursor:pointer;
+  transition:var(--transition);font-family:var(--font);white-space:nowrap;
+}
+.lang-btn.active{background:var(--green);color:#000;}
+.btn-primary{
+  padding:9px 20px;background:var(--green);color:#000;
+  border-radius:var(--radius-sm);border:none;cursor:pointer;
+  font-weight:700;font-size:0.88rem;font-family:var(--font);
+  transition:var(--transition);
+  box-shadow:0 0 20px var(--green-glow);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px var(--green-glow)}
+.btn-ghost{
+  padding:9px 20px;background:transparent;color:var(--text);
+  border-radius:var(--radius-sm);border:1px solid var(--card-border);
+  cursor:pointer;font-weight:600;font-size:0.88rem;font-family:var(--font);
+  transition:var(--transition);
+}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:none}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:var(--transition)}
+.mobile-menu{
+  display:none;position:fixed;top:70px;left:0;right:0;z-index:999;
+  background:rgba(11,18,32,0.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--card-border);
+  padding:1rem;flex-direction:column;gap:4px;
+}
+.mobile-menu.open{display:flex}
+
+/* SECTIONS */
+.section{padding:5rem 0}
+.container{max-width:1200px;margin:0 auto;padding:0 2rem}
+.section-label{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--green-dim);border:1px solid rgba(34,197,94,0.25);
+  border-radius:20px;padding:6px 16px;
+  color:var(--green);font-size:0.8rem;font-weight:600;
+  margin-bottom:1.2rem;
+}
+.section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-1px;margin-bottom:0.8rem}
+.section-sub{color:var(--text2);font-size:1rem;max-width:520px;line-height:1.7}
+.text-green{color:var(--green)}
+.highlight{
+  background:linear-gradient(135deg, var(--green), #86EFAC);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding-top:70px;position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;top:10%;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;
+  background:radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-content{max-width:800px;margin:0 auto;text-align:center}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:20px;padding:8px 18px;margin-bottom:2rem;
+  color:var(--text2);font-size:0.82rem;
+  animation:fadeDown 0.6s ease both;
+}
+.badge-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px var(--green-glow)}50%{box-shadow:0 0 40px rgba(34,197,94,0.5)}}
+
+.hero-greeting{color:var(--text2);font-size:1.1rem;margin-bottom:0.5rem;animation:fadeUp 0.6s 0.1s ease both}
+.hero-title{
+  font-size:clamp(2.5rem,7vw,5rem);font-weight:900;
+  letter-spacing:-2px;line-height:1.05;
+  margin-bottom:1.5rem;
+  animation:fadeUp 0.6s 0.2s ease both;
+}
+.hero-sub{color:var(--text2);font-size:1.1rem;max-width:500px;margin:0 auto 2.5rem;animation:fadeUp 0.6s 0.3s ease both}
+
+/* SEARCH BAR */
+.search-wrapper{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--radius);padding:6px 6px 6px 12px;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:1.5rem;
+  animation:fadeUp 0.6s 0.4s ease both;
+  backdrop-filter:blur(10px);
+  transition:var(--transition);max-width:660px;margin-inline:auto;
+  margin-bottom:1.5rem;
+}
+.search-wrapper:focus-within{border-color:var(--green);box-shadow:0 0 0 3px var(--green-dim)}
+.search-icon{color:var(--text3);font-size:1.1rem;flex-shrink:0}
+.search-input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text);font-family:var(--font);font-size:1rem;
+  padding:10px 0;
+}
+.search-input::placeholder{color:var(--text3)}
+.voice-btn{
+  width:44px;height:44px;border-radius:12px;
+  background:var(--card);border:1px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--transition);color:var(--text2);flex-shrink:0;
+}
+.voice-btn:hover{border-color:var(--green);color:var(--green)}
+.search-btn{
+  padding:10px 22px;background:var(--green);color:#000;
+  border-radius:14px;border:none;cursor:pointer;
+  font-weight:700;font-size:0.9rem;font-family:var(--font);
+  transition:var(--transition);white-space:nowrap;flex-shrink:0;
+}
+.search-btn:hover{transform:scale(1.03);box-shadow:0 0 25px var(--green-glow)}
+
+/* CATEGORY PILLS */
+.category-pills{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp 0.6s 0.5s ease both;
+}
+.pill{
+  padding:9px 18px;border-radius:20px;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--text2);font-size:0.85rem;font-weight:500;
+  cursor:pointer;transition:var(--transition);font-family:var(--font);
+  display:flex;align-items:center;gap:6px;
+}
+.pill:hover,.pill.active{
+  background:var(--green-dim);border-color:var(--green);
+  color:var(--green);box-shadow:0 0 15px var(--green-dim);
+}
+.pill.active{box-shadow:0 0 20px var(--green-glow);}
+
+/* CARDS */
+.card{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:1.5rem;
+  transition:var(--transition);backdrop-filter:blur(10px);
+}
+.card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(34,197,94,0.25);
+  background:var(--card-hover);
+  box-shadow:0 20px 60px rgba(0,0,0,0.3),0 0 30px var(--green-dim);
+}
+
+/* DEAL CARD */
+.deal-card{
+  position:relative;overflow:hidden;border-radius:var(--radius-lg);
+  border:1px solid var(--card-border);
+  background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  transition:var(--transition);cursor:pointer;
+}
+.deal-card:hover{transform:translateY(-6px);border-color:rgba(34,197,94,0.3);box-shadow:0 30px 80px rgba(0,0,0,0.4)}
+.deal-card-img{width:100%;height:220px;object-fit:cover;background:linear-gradient(135deg,#1a2a3a,#0e1a2b)}
+.deal-card-img-placeholder{
+  width:100%;height:220px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:4rem;
+  background:linear-gradient(135deg,rgba(34,197,94,0.1),rgba(56,189,248,0.1));
+}
+.deal-card-body{padding:1.5rem}
+.deal-badge{
+  position:absolute;top:1rem;right:1rem;
+  background:var(--green);color:#000;
+  padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;
+}
+.deal-route{font-size:1.2rem;font-weight:700;margin-bottom:0.3rem}
+.deal-arrow{color:var(--green);margin:0 6px}
+.deal-old{color:var(--text3);text-decoration:line-through;font-size:0.85rem}
+.deal-new{color:var(--green);font-size:1.4rem;font-weight:800}
+.deal-currency{font-size:0.9rem;margin-inline-start:4px}
+
+/* EVENT CARD */
+.event-card{
+  border-radius:var(--radius);overflow:hidden;
+  background:var(--card);border:1px solid var(--card-border);
+  transition:var(--transition);cursor:pointer;
+}
+.event-card:hover{transform:translateY(-5px) scale(1.01);border-color:rgba(34,197,94,0.3);box-shadow:0 25px 60px rgba(0,0,0,0.35)}
+.event-img{
+  height:180px;display:flex;align-items:center;justify-content:center;
+  font-size:3.5rem;
+  background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(56,189,248,0.08));
+  position:relative;
+}
+.event-rating{
+  position:absolute;top:10px;right:10px;
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);
+  padding:3px 10px;border-radius:20px;font-size:0.75rem;
+  display:flex;align-items:center;gap:4px;
+}
+.event-age{
+  position:absolute;top:10px;left:10px;
+  background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.4);
+  color:#F87171;padding:2px 8px;border-radius:8px;font-size:0.7rem;font-weight:600;
+}
+.event-body{padding:1.2rem}
+.event-title{font-weight:700;font-size:0.95rem;margin-bottom:0.3rem}
+.event-loc{color:var(--text3);font-size:0.8rem;display:flex;align-items:center;gap:5px;margin-bottom:1rem}
+.btn-buy{
+  width:100%;padding:10px;background:var(--green-dim);border:1px solid rgba(34,197,94,0.3);
+  color:var(--green);border-radius:var(--radius-sm);font-weight:700;font-size:0.85rem;
+  cursor:pointer;font-family:var(--font);transition:var(--transition);
+}
+.btn-buy:hover{background:var(--green);color:#000;box-shadow:0 0 20px var(--green-glow)}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+
+/* WHY CARDS */
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
+.why-card{
+  padding:1.8rem;border-radius:var(--radius);
+  background:var(--card);border:1px solid var(--card-border);
+  transition:var(--transition);
+}
+.why-card:hover{transform:translateY(-3px);border-color:rgba(34,197,94,0.25)}
+.why-icon{
+  width:48px;height:48px;border-radius:14px;
+  background:var(--green-dim);border:1px solid rgba(34,197,94,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;margin-bottom:1rem;
+}
+.why-title{font-weight:700;margin-bottom:0.4rem}
+.why-text{color:var(--text2);font-size:0.88rem;line-height:1.6}
+
+/* STATS */
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--card-border);border-radius:var(--radius);overflow:hidden;
+  margin:3rem 0;
+}
+.stat-item{
+  padding:2rem 1.5rem;text-align:center;
+  background:var(--card);
+}
+.stat-num{font-size:2.2rem;font-weight:900;color:var(--green);margin-bottom:0.3rem}
+.stat-label{color:var(--text2);font-size:0.85rem}
+
+/* CTA SECTION */
+.cta-section{
+  padding:4rem;border-radius:var(--radius-lg);
+  background:linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.04));
+  border:1px solid rgba(34,197,94,0.2);
+  text-align:center;position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);
+  width:400px;height:400px;
+  background:radial-gradient(circle, rgba(34,197,94,0.12) 0%, transparent 70%);
+}
+.cta-title{font-size:2.5rem;font-weight:900;margin-bottom:1rem}
+.cta-sub{color:var(--text2);margin-bottom:2rem;font-size:1rem}
+.cta-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--card-border);
+  padding:3rem 0 1.5rem;margin-top:4rem;
+}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:3rem;margin-bottom:2.5rem;
+}
+.footer-brand{font-size:1.1rem;font-weight:800;margin-bottom:1rem}
+.footer-desc{color:var(--text2);font-size:0.87rem;line-height:1.7;margin-bottom:1.2rem}
+.footer-social{display:flex;gap:10px}
+.social-btn{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--card);border:1px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:0.9rem;transition:var(--transition);text-decoration:none;color:var(--text2);
+}
+.social-btn:hover{border-color:var(--green);color:var(--green)}
+.footer-col h4{font-weight:700;margin-bottom:1rem;font-size:0.9rem}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+.footer-links a{color:var(--text2);text-decoration:none;font-size:0.85rem;transition:var(--transition)}
+.footer-links a:hover{color:var(--green)}
+.footer-bottom{
+  border-top:1px solid var(--card-border);padding-top:1.5rem;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+  color:var(--text3);font-size:0.8rem;
+}
+
+/* EVENTS PAGE */
+.page-hero{
+  padding:120px 0 4rem;
+  background:linear-gradient(180deg, rgba(34,197,94,0.06) 0%, transparent 100%);
+}
+.filter-bar{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:1.2rem 1.5rem;
+  display:flex;gap:1rem;align-items:center;flex-wrap:wrap;
+  margin-bottom:2rem;
+}
+.filter-select{
+  padding:8px 14px;background:rgba(255,255,255,0.06);
+  border:1px solid var(--card-border);border-radius:var(--radius-sm);
+  color:var(--text);font-family:var(--font);font-size:0.87rem;
+  cursor:pointer;outline:none;transition:var(--transition);
+}
+.filter-select:focus{border-color:var(--green)}
+.filter-input{
+  padding:8px 14px;background:rgba(255,255,255,0.06);
+  border:1px solid var(--card-border);border-radius:var(--radius-sm);
+  color:var(--text);font-family:var(--font);font-size:0.87rem;
+  outline:none;transition:var(--transition);
+}
+.filter-input:focus{border-color:var(--green)}
+.filter-input::placeholder{color:var(--text3)}
+
+/* FLIGHT PAGE */
+.flight-search{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius-lg);padding:2rem;
+  margin-bottom:2rem;
+}
+.flight-row{display:grid;grid-template-columns:1fr auto 1fr 1fr 1fr auto;gap:1rem;align-items:end}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{color:var(--text2);font-size:0.8rem;font-weight:600}
+.form-input{
+  padding:10px 14px;background:rgba(255,255,255,0.06);
+  border:1px solid var(--card-border);border-radius:var(--radius-sm);
+  color:var(--text);font-family:var(--font);font-size:0.9rem;
+  outline:none;transition:var(--transition);
+}
+.form-input:focus{border-color:var(--green)}
+.form-input::placeholder{color:var(--text3)}
+.swap-btn{
+  width:42px;height:42px;background:var(--green-dim);border:1px solid rgba(34,197,94,0.3);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1rem;color:var(--green);transition:var(--transition);
+  margin-bottom:0;
+}
+.swap-btn:hover{background:var(--green);color:#000;transform:rotate(180deg)}
+
+/* FLIGHT RESULT */
+.flight-result{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:1.5rem;
+  display:grid;grid-template-columns:1fr auto 1fr auto;
+  align-items:center;gap:2rem;
+  transition:var(--transition);
+}
+.flight-result:hover{border-color:rgba(34,197,94,0.3);background:var(--card-hover)}
+.airline-logo{font-size:1.8rem;margin-bottom:0.3rem}
+.airline-name{color:var(--text2);font-size:0.82rem}
+.flight-time{font-size:1.6rem;font-weight:800}
+.flight-city{color:var(--text2);font-size:0.8rem}
+.flight-line{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.flight-duration{color:var(--text2);font-size:0.78rem}
+.flight-bar{
+  width:120px;height:2px;background:var(--card-border);
+  position:relative;
+}
+.flight-bar::before,.flight-bar::after{
+  content:'';position:absolute;top:50%;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--green);transform:translateY(-50%);
+}
+.flight-bar::before{left:0}
+.flight-bar::after{right:0}
+.flight-bar-line{
+  position:absolute;top:0;left:6px;right:6px;height:100%;
+  background:linear-gradient(90deg,var(--green),rgba(34,197,94,0.4));
+}
+.direct-badge{color:var(--green);font-size:0.75rem;font-weight:600}
+.flight-price-col{text-align:center}
+.flight-price{font-size:1.4rem;font-weight:800;color:var(--green)}
+.flight-price-note{color:var(--text3);font-size:0.75rem;margin-bottom:0.8rem}
+
+/* DASHBOARD */
+.dashboard-layout{
+  display:grid;grid-template-columns:260px 1fr;
+  min-height:calc(100vh - 70px);margin-top:70px;
+}
+.sidebar{
+  background:rgba(14,26,43,0.9);border-inline-end:1px solid var(--card-border);
+  padding:2rem 1rem;position:sticky;top:70px;height:calc(100vh - 70px);
+  overflow-y:auto;backdrop-filter:blur(20px);
+}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;border-radius:var(--radius-sm);
+  cursor:pointer;transition:var(--transition);
+  color:var(--text2);font-size:0.9rem;font-weight:500;
+  margin-bottom:2px;border:none;background:none;font-family:var(--font);
+  width:100%;
+}
+.sidebar-item:hover{background:var(--card);color:var(--text)}
+.sidebar-item.active{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,0.2)}
+.sidebar-icon{font-size:1rem;width:20px;text-align:center}
+.dashboard-content{padding:2.5rem;overflow-y:auto}
+
+/* TICKET CARD */
+.ticket-card{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);overflow:hidden;position:relative;
+  transition:var(--transition);
+}
+.ticket-card:hover{border-color:rgba(34,197,94,0.25)}
+.ticket-header{
+  padding:1.2rem 1.5rem;
+  background:linear-gradient(135deg,rgba(34,197,94,0.1),rgba(34,197,94,0.04));
+  border-bottom:1px dashed var(--card-border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.ticket-body{padding:1.5rem;display:flex;align-items:center;justify-content:space-between}
+.ticket-qr{
+  width:80px;height:80px;background:white;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:2rem;
+  border:4px solid white;
+}
+.ticket-status{
+  padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;
+}
+.status-active{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3)}
+.status-past{background:rgba(100,116,139,0.15);color:var(--text3);border:1px solid rgba(100,116,139,0.2)}
+
+/* CHART */
+.chart-container{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:1.5rem;
+}
+.chart-bars{
+  display:flex;align-items:flex-end;gap:12px;height:160px;
+  padding:1rem 0 0;
+}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.chart-bar{
+  width:100%;border-radius:8px 8px 0 0;
+  background:linear-gradient(180deg, var(--green), rgba(34,197,94,0.4));
+  transition:var(--transition);cursor:pointer;position:relative;
+  min-height:20px;
+}
+.chart-bar:hover{filter:brightness(1.2)}
+.chart-bar:hover::after{
+  content:attr(data-val);
+  position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+  background:var(--green);color:#000;
+  padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;white-space:nowrap;
+}
+.chart-label{font-size:0.7rem;color:var(--text3)}
+
+/* SEAT MAP */
+.seat-map{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:2rem;text-align:center;
+}
+.stage{
+  background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(34,197,94,0.05));
+  border:1px solid rgba(34,197,94,0.3);border-radius:12px;
+  padding:12px;margin-bottom:2rem;color:var(--green);font-weight:700;font-size:0.9rem;
+}
+.seats-grid{display:flex;flex-direction:column;gap:8px;align-items:center}
+.seat-row{display:flex;gap:8px;align-items:center}
+.seat-row-label{width:20px;color:var(--text3);font-size:0.75rem}
+.seat{
+  width:28px;height:28px;border-radius:6px 6px 4px 4px;
+  border:none;cursor:pointer;font-size:0.65rem;font-weight:700;
+  transition:var(--transition);position:relative;
+}
+.seat.available{background:rgba(34,197,94,0.2);border:1px solid rgba(34,197,94,0.4);color:var(--green)}
+.seat.selected{background:var(--green);color:#000;box-shadow:0 0 12px var(--green-glow)}
+.seat.taken{background:rgba(100,116,139,0.2);border:1px solid rgba(100,116,139,0.2);color:var(--text3);cursor:not-allowed}
+.seat.vip{background:rgba(251,191,36,0.2);border:1px solid rgba(251,191,36,0.4);color:#FBBF24}
+.seat:hover:not(.taken):not(.selected){transform:scale(1.2);background:var(--green);color:#000}
+.seat-legend{display:flex;gap:1.5rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)}
+.legend-dot{width:14px;height:14px;border-radius:4px}
+
+/* CHECKOUT */
+.checkout-layout{display:grid;grid-template-columns:1fr 380px;gap:2rem;align-items:start}
+.payment-methods{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
+.payment-option{
+  padding:1rem 1.2rem;border-radius:var(--radius-sm);
+  background:var(--card);border:2px solid var(--card-border);
+  cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:10px;
+}
+.payment-option:hover{border-color:rgba(34,197,94,0.3)}
+.payment-option.selected{border-color:var(--green);background:var(--green-dim)}
+.payment-radio{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--card-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.payment-option.selected .payment-radio{border-color:var(--green)}
+.payment-option.selected .payment-radio::after{
+  content:'';width:8px;height:8px;border-radius:50%;background:var(--green);display:block;
+}
+.order-summary{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:1.5rem;position:sticky;top:90px;
+}
+.summary-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--card-border);font-size:0.9rem;
+}
+.summary-row:last-child{border:none;font-weight:800;font-size:1rem}
+.summary-total{color:var(--green)}
+.discount-row{display:flex;gap:10px;margin-bottom:1.5rem}
+.coupon-input{
+  flex:1;padding:10px 14px;background:rgba(255,255,255,0.06);
+  border:1px solid var(--card-border);border-radius:var(--radius-sm);
+  color:var(--text);font-family:var(--font);font-size:0.88rem;outline:none;
+}
+.coupon-input::placeholder{color:var(--text3)}
+.coupon-input:focus{border-color:var(--green)}
+
+/* INVESTORS */
+.investor-hero{
+  padding:120px 0 5rem;
+  background:linear-gradient(180deg,rgba(34,197,94,0.08) 0%,transparent 100%);
+}
+.metric-card{
+  padding:1.5rem;border-radius:var(--radius);
+  background:var(--card);border:1px solid var(--card-border);
+  text-align:center;transition:var(--transition);
+}
+.metric-card:hover{border-color:rgba(34,197,94,0.3);transform:translateY(-3px)}
+.metric-num{font-size:2rem;font-weight:900;color:var(--green);margin-bottom:0.3rem}
+.metric-label{color:var(--text2);font-size:0.82rem}
+.revenue-table{width:100%;border-collapse:collapse}
+.revenue-table th{
+  padding:12px 16px;text-align:right;
+  color:var(--text2);font-size:0.8rem;font-weight:600;
+  border-bottom:1px solid var(--card-border);
+}
+.ltr .revenue-table th{text-align:left}
+.revenue-table td{
+  padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:0.88rem;
+}
+.revenue-table tr:hover td{background:var(--card)}
+
+/* ABOUT */
+.team-card{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:1.5rem;text-align:center;
+  transition:var(--transition);
+}
+.team-card:hover{transform:translateY(-4px);border-color:rgba(34,197,94,0.25)}
+.team-avatar{
+  width:70px;height:70px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),#86EFAC);
+  margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;font-weight:900;color:#000;
+}
+.team-name{font-weight:700;margin-bottom:0.2rem}
+.team-role{color:var(--text2);font-size:0.82rem}
+
+/* CONTACT */
+.contact-form{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:2rem;
+}
+textarea.form-input{resize:vertical;min-height:120px;padding:12px 14px}
+
+/* NOTIFICATIONS */
+.toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--green);color:#000;padding:12px 24px;border-radius:var(--radius-sm);
+  font-weight:700;font-size:0.9rem;z-index:9999;
+  transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events:none;white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* LOADING */
+.loading-overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;
+}
+.loading-logo{font-size:2rem;font-weight:900;animation:pulse 1.5s infinite}
+.loading-bar{
+  width:200px;height:3px;background:var(--card-border);border-radius:3px;overflow:hidden;
+}
+.loading-progress{
+  height:100%;background:var(--green);border-radius:3px;
+  animation:loadAnim 1.5s ease forwards;
+}
+@keyframes loadAnim{from{width:0}to{width:100%}}
+
+/* ANIMATIONS */
+.fade-in{opacity:0;animation:fadeIn 0.6s ease forwards}
+.fade-up{opacity:0;animation:fadeUp 0.6s ease forwards}
+.slide-right{opacity:0;animation:slideRight 0.6s ease forwards}
+.slide-left{opacity:0;animation:slideLeft 0.6s ease forwards}
+[data-delay="1"]{animation-delay:0.1s}
+[data-delay="2"]{animation-delay:0.2s}
+[data-delay="3"]{animation-delay:0.3s}
+[data-delay="4"]{animation-delay:0.4s}
+[data-delay="5"]{animation-delay:0.5s}
+[data-delay="6"]{animation-delay:0.6s}
+
+/* SECURE BADGE */
+.secure-badge{
+  display:flex;align-items:center;gap:8px;
+  color:var(--text3);font-size:0.78rem;margin-top:1rem;
+}
+.secure-icon{color:var(--green);font-size:0.9rem}
+
+/* PROGRESS STEPS */
+.steps{display:flex;align-items:center;gap:0;margin-bottom:2rem}
+.step{
+  display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;
+}
+.step-circle{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.85rem;
+  transition:var(--transition);
+}
+.step-circle.done{background:var(--green);color:#000}
+.step-circle.active{background:var(--green-dim);border:2px solid var(--green);color:var(--green)}
+.step-circle.pending{background:var(--card);border:2px solid var(--card-border);color:var(--text3)}
+.step-label{font-size:0.75rem;color:var(--text2)}
+.step-line{flex:1;height:2px;background:var(--card-border);margin:0 -1px;position:relative;top:-12px}
+.step-line.done{background:var(--green)}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--card);border-radius:var(--radius-sm);padding:4px;margin-bottom:2rem;border:1px solid var(--card-border)}
+.tab{
+  flex:1;padding:10px;border-radius:10px;text-align:center;
+  cursor:pointer;font-size:0.88rem;font-weight:500;
+  transition:var(--transition);border:none;background:none;color:var(--text2);font-family:var(--font);
+}
+.tab.active{background:var(--green);color:#000;font-weight:700}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;opacity:0;pointer-events:none;transition:var(--transition);
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--bg2);border:1px solid var(--card-border);
+  border-radius:var(--radius-lg);padding:2rem;max-width:500px;width:100%;
+  transform:scale(0.95);transition:var(--transition);
+}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+.modal-title{font-size:1.2rem;font-weight:800}
+.modal-close{
+  width:32px;height:32px;border-radius:8px;background:var(--card);border:none;
+  cursor:pointer;color:var(--text2);font-size:1rem;display:flex;align-items:center;justify-content:center;
+  transition:var(--transition);
+}
+.modal-close:hover{background:rgba(239,68,68,0.2);color:#F87171}
+
+/* RESPONSIVE — Tablet */
+@media(max-width:1024px){
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .flight-row{grid-template-columns:1fr 1fr 1fr!important;gap:1rem}
+  .checkout-layout{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .why-layout{grid-template-columns:1fr!important;gap:2rem!important}
+  .two-col{grid-template-columns:1fr!important;gap:2rem!important}
+}
+/* RESPONSIVE — Mobile */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .nav-actions .btn-ghost{display:none!important}
+  .lang-toggle{padding:4px}
+  .lang-btn{padding:3px 8px;font-size:0.72rem}
+  .hero{padding-top:80px;min-height:auto;padding-bottom:3rem}
+  .hero-title{font-size:2.2rem;letter-spacing:-1px}
+  .hero-sub{font-size:0.95rem}
+  .search-wrapper{border-radius:16px;padding:4px 4px 4px 10px;margin-inline:0}
+  .search-input{font-size:0.88rem}
+  .search-btn{padding:10px 14px;font-size:0.82rem}
+  .category-pills{gap:7px}
+  .pill{padding:7px 13px;font-size:0.8rem}
+  .section{padding:2.5rem 0}
+  .section-title{font-size:1.8rem}
+  .page-hero{padding:90px 0 2.5rem}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .why-layout{grid-template-columns:1fr!important;gap:2rem!important}
+  .two-col{grid-template-columns:1fr!important;gap:1.5rem!important}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .stat-num{font-size:1.8rem}
+  .flight-row{grid-template-columns:1fr!important;gap:1rem}
+  .swap-btn{display:none}
+  .flight-result{grid-template-columns:1fr!important;gap:1rem;text-align:center;padding:1.2rem}
+  .flight-line{flex-direction:row;justify-content:center;gap:10px}
+  .flight-bar{width:80px}
+  .filter-bar{flex-direction:column;align-items:stretch;gap:0.7rem;padding:1rem}
+  .filter-select,.filter-input{width:100%}
+  .dashboard-layout{grid-template-columns:1fr!important}
+  .sidebar{position:static;height:auto;border-inline-end:none;border-bottom:1px solid var(--card-border);display:flex;overflow-x:auto;padding:0.75rem;gap:4px;scrollbar-width:none}
+  .sidebar::-webkit-scrollbar{display:none}
+  .sidebar-item{flex-shrink:0;padding:9px 12px;font-size:0.82rem;white-space:nowrap}
+  .dashboard-content{padding:1.5rem 1rem}
+  .ticket-body{flex-direction:column;gap:1rem}
+  .ticket-qr{width:64px;height:64px;font-size:1.6rem}
+  .bus-seat-layout{flex-direction:column}
+  .checkout-layout{grid-template-columns:1fr!important;gap:1.5rem}
+  .order-summary{position:static!important}
+  .cta-section{padding:2rem 1.2rem}
+  .cta-title{font-size:1.8rem}
+  .cta-buttons{flex-direction:column;align-items:center}
+  .cta-buttons .btn-primary,.cta-buttons .btn-ghost{width:100%;max-width:320px;padding:14px}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center;gap:0.5rem}
+  .steps{flex-wrap:wrap;gap:1rem;justify-content:center}
+  .step-line{display:none}
+  .revenue-table{font-size:0.78rem}
+  .revenue-table th,.revenue-table td{padding:8px 10px}
+  .modal{padding:1.5rem;margin:0 0.5rem}
+}
+/* RESPONSIVE — Small phones */
+@media(max-width:480px){
+  nav{padding:0 1rem}
+  .container{padding:0 1rem}
+  .hero-title{font-size:1.9rem}
+  .hero-content{padding:0}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .stat-item{padding:1.2rem 0.8rem}
+  .stat-num{font-size:1.5rem}
+  .deal-card-img-placeholder{height:160px;font-size:3rem}
+  #eventsGrid{grid-template-columns:repeat(2,1fr)!important}
+  .event-img{height:140px;font-size:2.5rem}
+  .event-title{font-size:0.85rem}
+  .flight-time{font-size:1.3rem}
+  .flight-price{font-size:1.2rem}
+  .seat{width:24px;height:24px;font-size:0.55rem}
+  .bus-seats-grid{gap:5px}
+  .sidebar{gap:3px;padding:0.6rem}
+  .sidebar-item{padding:8px 10px;font-size:0.78rem;border-radius:10px}
+  .chart-bars{height:120px}
+  .chart-label{font-size:0.6rem}
+  .cta-section{border-radius:16px}
+  .step-circle{width:30px;height:30px;font-size:0.75rem}
+  .step-label{font-size:0.68rem}
+  #page-organizer .grid-4{grid-template-columns:repeat(2,1fr)!important}
+  .metric-num{font-size:1.6rem}
+  .toast{font-size:0.82rem;padding:10px 18px;left:1rem;right:1rem;transform:translateX(0) translateY(100px);width:calc(100% - 2rem);text-align:center;border-radius:12px}
+  .toast.show{transform:translateX(0) translateY(0)}
+  .summary-row{font-size:0.82rem;padding:8px 0}
+  .payment-option{padding:0.8rem 1rem}
+  .seat-legend{gap:0.8rem}
+  .legend-item{font-size:0.7rem}
+}
+
+/* BUS */
+.bus-seat-layout{
+  display:flex;gap:20px;align-items:flex-start;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:2rem;
+}
+.bus-body{
+  flex:1;
+  background:rgba(255,255,255,0.02);border:1px solid var(--card-border);
+  border-radius:var(--radius);padding:1.5rem;
+}
+.bus-driver{
+  background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);
+  border-radius:10px;padding:8px;text-align:center;font-size:0.75rem;
+  color:var(--green);margin-bottom:1rem;
+}
+.bus-seats-grid{display:grid;grid-template-columns:1fr 1fr 12px 1fr 1fr;gap:8px}
+.aisle{background:none}
+
+/* NUMBER INPUT */
+.num-input{display:flex;align-items:center;gap:10px}
+.num-btn{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--text);cursor:pointer;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:var(--transition);
+}
+.num-btn:hover{border-color:var(--green);color:var(--green)}
+.num-val{font-weight:700;min-width:20px;text-align:center}
+
+/* GLOWING DOT */
+.live-dot{
+  display:inline-flex;align-items:center;gap:6px;
+  color:var(--green);font-size:0.78rem;font-weight:600;
+}
+.live-dot::before{
+  content:'';width:7px;height:7px;border-radius:50%;
+  background:var(--green);animation:pulse 2s infinite;
+}
+
+/* Extra mobile polish */
+@media(max-width:768px){
+  .card{padding:1.2rem}
+  .why-card{padding:1.3rem}
+  .deal-card-body{padding:1.1rem}
+  .event-body{padding:1rem}
+  .flight-search{padding:1.2rem}
+  .cta-section::before{display:none}
+  .hero-glow{display:none}
+  nav .btn-primary{padding:7px 12px;font-size:0.8rem}
+  .section-label{font-size:0.75rem;padding:5px 12px}
+  .section-sub{font-size:0.9rem}
+  .footer-social{justify-content:flex-start}
+  .team-avatar{width:58px;height:58px;font-size:1.5rem}
+  .why-icon{width:42px;height:42px;font-size:1.1rem}
+  .deal-new{font-size:1.2rem}
+  .stats-row{border-radius:16px}
+  .stat-item{padding:1.2rem 1rem}
+  .contact-form{padding:1.2rem}
+  .investor-hero{padding:90px 0 2.5rem}
+  .tab{font-size:0.82rem;padding:8px}
+  .page-hero .section-title{font-size:1.6rem}
+  .page-hero .section-sub{font-size:0.88rem}
+}
+@media(max-width:480px){
+  .grid-3{grid-template-columns:1fr}
+  .hero-badge{font-size:0.72rem;padding:5px 10px;gap:6px}
+  .badge-dot{width:6px;height:6px}
+  .pill{padding:6px 10px;font-size:0.76rem}
+  .category-pills{gap:5px}
+  .btn-primary,.btn-ghost{font-size:0.85rem}
+  .deal-new{font-size:1.1rem}
+  .hero-sub{font-size:0.88rem;padding:0 0.5rem}
+}
+
+</style>
+</head>
+<body>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-logo text-green">🎟 Bilet</div>
+  <div class="loading-bar"><div class="loading-progress"></div></div>
+  <div style="color:var(--text3);font-size:0.82rem">چاوەڕوان بکە...</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- BG Effects -->
+<div class="bg-mesh"></div>
+<div class="bg-grid"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" onclick="navigate('home')">
+    <div class="logo-icon">🎟</div>
+    <span>Bilet</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-link active" data-page="home" onclick="navigate('home')" id="nav-home">سەرەکی</button>
+    <button class="nav-link" data-page="events" onclick="navigate('events')" id="nav-events">ڕووداوەکان</button>
+    <button class="nav-link" data-page="flights" onclick="navigate('flights')" id="nav-flights">فڕۆکەکان</button>
+    <button class="nav-link" data-page="buses" onclick="navigate('buses')" id="nav-buses">پاسەکان</button>
+    <button class="nav-link" data-page="about" onclick="navigate('about')" id="nav-about">دەربارە</button>
+    <button class="nav-link" data-page="investors" onclick="navigate('investors')" id="nav-investors">سەرمایەگذاران</button>
+  </div>
+  <div class="nav-actions">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="langKu" onclick="setLang('ku')" title="کوردی سۆرانی">سۆرانی</button>
+      <button class="lang-btn" id="langBa" onclick="setLang('ba')" title="کوردی بادینانی">بادینانی</button>
+      <button class="lang-btn" id="langEn" onclick="setLang('en')" title="English">EN</button>
+    </div>
+    <button class="btn-ghost" onclick="navigate('dashboard')" id="nav-dashboard-btn" style="display:none">هەژمارم</button>
+    <button class="btn-primary" onclick="showModal('authModal')" id="nav-auth-btn" style="white-space:nowrap">چوونەژوورەوە</button>
+  </div>
+  <button class="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="nav-link" onclick="navigate('home');toggleMobileMenu()">سەرەکی</button>
+  <button class="nav-link" onclick="navigate('events');toggleMobileMenu()">ڕووداوەکان</button>
+  <button class="nav-link" onclick="navigate('flights');toggleMobileMenu()">فڕۆکەکان</button>
+  <button class="nav-link" onclick="navigate('buses');toggleMobileMenu()">پاسەکان</button>
+  <button class="nav-link" onclick="navigate('about');toggleMobileMenu()">دەربارە</button>
+  <button class="nav-link" onclick="navigate('investors');toggleMobileMenu()">سەرمایەگذاران</button>
+  <button class="nav-link" onclick="navigate('contact');toggleMobileMenu()">پەیوەندی</button>
+
+        <div style="border-top:1px solid var(--card-border);padding-top:0.75rem;margin-top:0.5rem;display:flex;gap:6px;justify-content:center">
+            <button class="lang-btn" onclick="setLang('ku');toggleMobileMenu()" id="mm-langKu" style="padding:6px 12px;border-radius:12px;background:var(--green);color:#000;font-family:var(--font);font-weight:700;font-size:0.78rem;border:none;cursor:pointer">سۆرانی</button>
+            <button class="lang-btn" onclick="setLang('ba');toggleMobileMenu()" style="padding:6px 12px;border-radius:12px;background:var(--card);color:var(--text2);font-family:var(--font);font-weight:700;font-size:0.78rem;border:1px solid var(--card-border);cursor:pointer">بادینانی</button>
+            <button class="lang-btn" onclick="setLang('en');toggleMobileMenu()" style="padding:6px 12px;border-radius:12px;background:var(--card);color:var(--text2);font-family:var(--font);font-weight:700;font-size:0.78rem;border:1px solid var(--card-border);cursor:pointer">EN</button>
+        </div>
+    </div>
+
+<!-- ===================== HOME PAGE ===================== -->
+<div class="page active" id="page-home">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span id="txt-badge">زیاتر لە ٥٠,٠٠٠ بلیت بەردەستە</span>
+        </div>
+        <p class="hero-greeting" id="txt-greeting">🌙 شەوت باش، ئارام</p>
+        <h1 class="hero-title">
+          <span id="txt-hero1">بلیتی</span> 
+          <span class="highlight" id="txt-hero2">خولیاکەت</span><br>
+          <span id="txt-hero3">ئێستا بکڕە</span>
+        </h1>
+        <p class="hero-sub" id="txt-hero-sub">پلاتفۆرمی بلیتی دیجیتاڵ بۆ ڕووداو، فڕۆکە، پاس و زیاتر — بە QR کۆد، بە ئاسانی تەواو.</p>
+
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input class="search-input" id="heroSearch" type="text" placeholder="گەڕان بۆ بلیتی فڕۆکە، یاری، کونسێرت..." />
+          <button class="voice-btn" onclick="voiceSearch()">🎙</button>
+          <button class="search-btn" onclick="doSearch()" id="txt-searchbtn">گەڕان</button>
+        </div>
+
+        <div class="category-pills">
+          <button class="pill active" onclick="setCategory(this,'concerts')">🎤 <span id="c1">کونسێرت</span></button>
+          <button class="pill" onclick="setCategory(this,'sports')">⚽ <span id="c2">یاری</span></button>
+          <button class="pill" onclick="setCategory(this,'flights')">✈️ <span id="c3">فڕۆکە</span></button>
+          <button class="pill" onclick="setCategory(this,'buses')">🚌 <span id="c4">پاس</span></button>
+          <button class="pill" onclick="setCategory(this,'cinema')">🎬 <span id="c5">سینەما</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section style="padding:0 0 1rem">
+    <div class="container">
+      <div class="stats-row fade-in">
+        <div class="stat-item">
+          <div class="stat-num">+٥٠K</div>
+          <div class="stat-label" id="s1">بلیتی فرۆشراو</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">+١٢٠</div>
+          <div class="stat-label" id="s2">ڕووداوی چالاک</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">+٢٠K</div>
+          <div class="stat-label" id="s3">بەکارهێنەری تۆمارکراو</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">٤.٩ ⭐</div>
+          <div class="stat-label" id="s4">نرخاندنی بەکارهێنەر</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED DEALS -->
+  <section class="section">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+        <div>
+          <div class="section-label">🔥 <span id="dl1">بەهاى داشکاندراو</span></div>
+          <h2 class="section-title" id="dl2">کێشەی تایبەت</h2>
+          <p class="section-sub" id="dl3">کەمترین نرخ بۆ بلیتی مەودای نزیک و دوور</p>
+        </div>
+        <button class="btn-ghost" onclick="navigate('flights')" id="dl4">بینینی هەموو ✈</button>
+      </div>
+      <div class="grid-3" id="dealsGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS NEARBY -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+        <div>
+          <div class="section-label">📍 <span id="ev1">نزیک تۆ</span></div>
+          <h2 class="section-title" id="ev2">ڕووداوەکانی نزیک</h2>
+          <p class="section-sub" id="ev3">ئەمشەو چی دەبێ لە هەولێر و دەوروبەرت</p>
+        </div>
+        <button class="btn-ghost" onclick="navigate('events')" id="ev4">بینینی هەموو →</button>
+      </div>
+      <div class="grid-4" id="eventsGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY BILET -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="why-layout two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+        <div>
+          <div class="section-label">💎 <span id="wy0">تایبەتمەندییەکان</span></div>
+          <h2 class="section-title" id="wy1">بۆچی Bilet؟</h2>
+          <p class="section-sub" id="wy2">پلاتفۆرمی هاوچەرخ بۆ سەردەمی دیجیتاڵ — سادە، پارێزراو، بە کوالیتی</p>
+          <div style="margin-top:2.5rem;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:12px;color:var(--text2);font-size:0.9rem">
+              <span style="color:var(--green)">✓</span> <span id="wy-a">بلیت دیجیتاڵی بە QR کۆد</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;color:var(--text2);font-size:0.9rem">
+              <span style="color:var(--green)">✓</span> <span id="wy-b">پارەدانەوەی ئاسایی و خێرا</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;color:var(--text2);font-size:0.9rem">
+              <span style="color:var(--green)">✓</span> <span id="wy-c">سیستەمی دژ بە فرۆشی دووبارە</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;color:var(--text2);font-size:0.9rem">
+              <span style="color:var(--green)">✓</span> <span id="wy-d">داشبۆردی ڕاستەوخۆ بۆ ڕێکخەر</span>
+            </div>
+          </div>
+          <div style="margin-top:2rem;display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn-primary" onclick="showModal('authModal')" id="wy-cta1">دەستپێبکە ئێستا</button>
+            <button class="btn-ghost" onclick="navigate('about')" id="wy-cta2">فێربوون زیاتر</button>
+          </div>
+        </div>
+        <div class="why-grid">
+          <div class="why-card fade-in" data-delay="1">
+            <div class="why-icon">📱</div>
+            <div class="why-title" id="wc1">بلیتی دیجیتاڵ</div>
+            <div class="why-text" id="wct1">QR کۆدی زیرەک بە هەموو وردەکاریەکانی بلیتەکەت</div>
+          </div>
+          <div class="why-card fade-in" data-delay="2">
+            <div class="why-icon">💳</div>
+            <div class="why-title" id="wc2">پارەدان ئاسان</div>
+            <div class="why-text" id="wct2">کارت، کاش و جزدانی دیجیتاڵ — هەموو شێوازێک بەردەستە</div>
+          </div>
+          <div class="why-card fade-in" data-delay="3">
+            <div class="why-icon">🛡</div>
+            <div class="why-title" id="wc3">پارێزراو ١٠٠٪</div>
+            <div class="why-text" id="wct3">سیستەمی پێشرەوی دژ بە بلیتی دروستکراو و فرۆشی دووبارە</div>
+          </div>
+          <div class="why-card fade-in" data-delay="4">
+            <div class="why-icon">📊</div>
+            <div class="why-title" id="wc4">داشبۆردی زیرەک</div>
+            <div class="why-text" id="wct4">ئامارەکانت بە ڕاستەوخۆ ببینە — فرۆشتن، قازانج و تێکڕا</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="cta-section">
+        <div class="section-label" style="margin:0 auto 1.2rem">🚀 <span id="ct0">دەستپێکردن</span></div>
+        <h2 class="cta-title" id="ct1">ئێستا تۆمار بکە</h2>
+        <p class="cta-sub" id="ct2">کاری دیجیتاڵ بکە، بلیتەکانت ببە ئۆنلاین</p>
+        <div class="cta-buttons">
+          <button class="btn-primary" style="padding:14px 32px;font-size:1rem" onclick="showModal('authModal')" id="ct3">دەستپێبکە بە فرۆشتن 🎟</button>
+          <button class="btn-ghost" style="padding:14px 32px;font-size:1rem" onclick="navigate('investors')" id="ct4">زانیاری سەرمایەگذاران →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="nav-logo footer-brand" style="cursor:default">
+            <div class="logo-icon" style="width:32px;height:32px;font-size:0.85rem">🎟</div>
+            Bilet Technologies
+          </div>
+          <p class="footer-desc" id="ft1">پلاتفۆرمی بلیتی دیجیتاڵ بۆ کوردستان — ئێمە بلیت دەگۆڕین بە ئەزموونێکی جوان</p>
+          <div class="footer-social">
+            <a class="social-btn" href="#">𝕏</a>
+            <a class="social-btn" href="#">in</a>
+            <a class="social-btn" href="#">ig</a>
+            <a class="social-btn" href="#">fb</a>
+          </div>
+        </div>
+        <div>
+          <h4 id="ft-h1">بلیتەکان</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="navigate('events')">ڕووداوەکان</a></li>
+            <li><a href="#" onclick="navigate('flights')">فڕۆکەکان</a></li>
+            <li><a href="#" onclick="navigate('buses')">پاسەکان</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 id="ft-h2">کۆمپانیا</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="navigate('about')">دەربارە</a></li>
+            <li><a href="#" onclick="navigate('investors')">سەرمایەگذاران</a></li>
+            <li><a href="#" onclick="navigate('contact')">پەیوەندی</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 id="ft-h3">یاسایی</h4>
+          <ul class="footer-links">
+            <li><a href="#">مافی تایبەتی</a></li>
+            <li><a href="#">مەرجەکان</a></li>
+            <li><a href="#">بیمە</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span id="ft-copy">© ٢٠٢٥ Bilet Technologies. هەموو مافێک پارێزراوە.</span>
+        <span id="ft-made">دروستکراو بە ❤️ لە هەولێر، کوردستان</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ===================== EVENTS PAGE ===================== -->
+<div class="page" id="page-events">
+  <div class="page-hero">
+    <div class="container">
+      <div class="section-label">📅 <span id="ep1">ڕووداوەکان</span></div>
+      <h1 class="section-title" id="ep2">هەموو ڕووداوەکان</h1>
+      <p class="section-sub" id="ep3">لە کونسێرت تا یاری — هەموو بلیتێک لە یەک شوێن</p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="filter-bar">
+      <select class="filter-select" id="evTypeFilter">
+        <option value="">🎭 هەموو جۆرەکان</option>
+        <option>🎤 کونسێرت</option>
+        <option>⚽ یاری</option>
+        <option>🎬 سینەما</option>
+        <option>🎪 فێستیڤاڵ</option>
+      </select>
+      <select class="filter-select" id="evCityFilter">
+        <option value="">📍 هەموو شارەکان</option>
+        <option>هەولێر</option>
+        <option>سلێمانی</option>
+        <option>دهۆک</option>
+        <option>کرکوک</option>
+      </select>
+      <input class="filter-input" type="date" id="evDate">
+      <input class="filter-input" placeholder="🔍 گەڕان..." id="evSearch" style="flex:1">
+      <select class="filter-select" id="evSort">
+        <option>ڕیزبەندی: نوێترین</option>
+        <option>ڕیزبەندی: نرخ ↑</option>
+        <option>ڕیزبەندی: نرخ ↓</option>
+        <option>ڕیزبەندی: گەورەترین</option>
+      </select>
+      <button class="btn-primary" onclick="filterEvents()">فلتەر</button>
+    </div>
+    <div class="grid-4" id="allEventsGrid" style="margin-bottom:3rem"></div>
+    <div style="display:flex;justify-content:center;gap:8px;margin-bottom:3rem" id="pagination"></div>
+  </div>
+</div>
+
+<!-- ===================== FLIGHTS PAGE ===================== -->
+<div class="page" id="page-flights">
+  <div class="page-hero">
+    <div class="container">
+      <div class="section-label">✈️ فڕۆکەکان</div>
+      <h1 class="section-title" id="fl1">گەڕان بۆ فڕۆکە</h1>
+      <p class="section-sub" id="fl2">کەمترین نرخ، باشترین سەفەر</p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="flight-search">
+      <div style="display:flex;gap:12px;margin-bottom:1.5rem;flex-wrap:wrap">
+        <button class="pill active" id="flOneWay" onclick="setTripType('one')">→ <span id="flot">یەک لایەنە</span></button>
+        <button class="pill" id="flRound" onclick="setTripType('round')">⇌ <span id="flrt">دووسویی</span></button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr 1fr 1fr auto;gap:1rem;align-items:end;flex-wrap:wrap" class="flight-row">
+        <div class="form-group">
+          <label class="form-label" id="frl1">لە کوێ</label>
+          <input class="form-input" id="fromCity" placeholder="هەولێر (EBL)" value="هەولێر (EBL)">
+        </div>
+        <button class="swap-btn" onclick="swapCities()">⇌</button>
+        <div class="form-group">
+          <label class="form-label" id="frl2">بۆ کوێ</label>
+          <input class="form-input" id="toCity" placeholder="ئیستانبول (IST)" value="ئیستانبول (IST)">
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="frl3">بەروار</label>
+          <input class="form-input" type="date" id="flDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="frl4">مسافیر</label>
+          <div class="num-input">
+            <button class="num-btn" onclick="changePassengers(-1)">−</button>
+            <span class="num-val" id="passengerCount">١</span>
+            <button class="num-btn" onclick="changePassengers(1)">+</button>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="searchFlights()" style="padding:12px 24px" id="frl5">گەڕان</button>
+      </div>
+    </div>
+    <div id="flightResults" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:3rem"></div>
+  </div>
+</div>
+
+<!-- ===================== BUSES PAGE ===================== -->
+<div class="page" id="page-buses">
+  <div class="page-hero">
+    <div class="container">
+      <div class="section-label">🚌 پاسەکان</div>
+      <h1 class="section-title" id="bu1">گەڕان بۆ پاس</h1>
+      <p class="section-sub" id="bu2">گواستنەوەی ئاسان لە ناوەوەی کوردستان</p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="flight-search">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:1rem;align-items:end">
+        <div class="form-group">
+          <label class="form-label">لە کوێ</label>
+          <select class="form-input">
+            <option>هەولێر</option><option>سلێمانی</option><option>دهۆک</option><option>کرکوک</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">بۆ کوێ</label>
+          <select class="form-input">
+            <option>سلێمانی</option><option>هەولێر</option><option>دهۆک</option><option>کرکوک</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">بەروار</label>
+          <input class="form-input" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">مسافیر</label>
+          <div class="num-input">
+            <button class="num-btn" onclick="changeBusPassengers(-1)">−</button>
+            <span class="num-val" id="busPassCount">١</span>
+            <button class="num-btn" onclick="changeBusPassengers(1)">+</button>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="searchBuses()" style="padding:12px 24px">گەڕان</button>
+      </div>
+    </div>
+    <div id="busResults" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem"></div>
+    <div id="busSeatSection" style="display:none">
+      <h3 style="margin-bottom:1.2rem;font-weight:700">دیاری کردنی کورسی</h3>
+      <div class="bus-seat-layout">
+        <div class="bus-body" style="max-width:300px">
+          <div class="bus-driver">🚌 شۆفێر</div>
+          <div class="bus-seats-grid" id="busSeatGrid"></div>
+        </div>
+        <div style="flex:1">
+          <div class="card" style="margin-bottom:1rem">
+            <div style="font-weight:700;margin-bottom:1rem">کورسی هەڵبژێردراو</div>
+            <div id="selectedBusSeats" style="color:var(--text2);font-size:0.9rem">هیچ کورسیێک هەڵنەبژێردراوە</div>
+          </div>
+          <div class="card">
+            <div class="summary-row"><span>نرخی هەر کورسی</span><span class="text-green">١٢,٠٠٠ د.ع</span></div>
+            <div class="summary-row"><span>ژمارەی کورسی</span><span id="busSeatCount">٠</span></div>
+            <div class="summary-row"><span style="font-weight:800">کۆی گشتی</span><span class="summary-total" id="busTotalPrice">٠ د.ع</span></div>
+            <button class="btn-primary" style="width:100%;padding:12px;margin-top:1rem;font-size:1rem" onclick="navigate('checkout')">ڕیزوبکە 🎟</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== DASHBOARD PAGE ===================== -->
+<div class="page" id="page-dashboard">
+  <div class="dashboard-layout">
+    <div class="sidebar">
+      <button class="sidebar-item active" onclick="switchDashTab('tickets',this)"><span class="sidebar-icon">🎟</span> <span id="db1">بلیتەکانم</span></button>
+      <button class="sidebar-item" onclick="switchDashTab('wallet',this)"><span class="sidebar-icon">💳</span> <span id="db2">جزدان</span></button>
+      <button class="sidebar-item" onclick="switchDashTab('saved',this)"><span class="sidebar-icon">❤️</span> <span id="db3">پاشەکەوتکراو</span></button>
+      <button class="sidebar-item" onclick="switchDashTab('settings',this)"><span class="sidebar-icon">⚙️</span> <span id="db4">ڕێکخستن</span></button>
+      <div style="border-top:1px solid var(--card-border);margin:1rem 0"></div>
+      <button class="sidebar-item" onclick="navigate('organizer')"><span class="sidebar-icon">📊</span> <span>داشبۆردی ڕێکخەر</span></button>
+                <button class="sidebar-item" onclick="navigate('home')"><span class="sidebar-icon">🚪</span> <span id="db5">دەرچوون</span></button>
+    </div>
+    <div class="dashboard-content">
+      <div id="dashTab-tickets">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+          <div>
+            <h2 style="font-weight:800;font-size:1.5rem" id="db-t1">بلیتەکانم</h2>
+            <p style="color:var(--text2);font-size:0.88rem" id="db-t2">هەموو بلیتەکانت لە یەک شوێن</p>
+          </div>
+          <div class="live-dot">ڕاستەوخۆ نوێدەکرێتەوە</div>
+        </div>
+        <div class="tabs">
+          <button class="tab active" onclick="switchTicketTab('active',this)" id="tab-active">✅ بلیتە نوێکان</button>
+          <button class="tab" onclick="switchTicketTab('past',this)" id="tab-past">📁 بلیتە کۆنەکان</button>
+        </div>
+        <div id="ticketsList" style="display:flex;flex-direction:column;gap:1rem"></div>
+      </div>
+      <div id="dashTab-wallet" style="display:none">
+        <h2 style="font-weight:800;margin-bottom:2rem" id="db-w1">جزدانم</h2>
+        <div class="grid-3" style="margin-bottom:2rem">
+          <div class="metric-card"><div class="metric-num">٢٨٥,٠٠٠</div><div class="metric-label" id="db-w2">موجودی (د.ع)</div></div>
+          <div class="metric-card"><div class="metric-num">١٢</div><div class="metric-label" id="db-w3">مامەڵەی ئەم مانگە</div></div>
+          <div class="metric-card"><div class="metric-num">٤</div><div class="metric-label" id="db-w4">پارەدانەوەی چاوەڕوان</div></div>
+        </div>
+        <div class="card">
+          <h3 style="font-weight:700;margin-bottom:1.5rem" id="db-w5">مامەڵەی دوایین</h3>
+          <table style="width:100%;border-collapse:collapse">
+            <tr style="border-bottom:1px solid var(--card-border)">
+              <th style="padding:10px;text-align:right;color:var(--text2);font-size:0.8rem">ناو</th>
+              <th style="padding:10px;text-align:right;color:var(--text2);font-size:0.8rem">بەروار</th>
+              <th style="padding:10px;text-align:right;color:var(--text2);font-size:0.8rem">نرخ</th>
+              <th style="padding:10px;text-align:right;color:var(--text2);font-size:0.8rem">دۆخ</th>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:10px;font-size:0.88rem">فڕۆکە هەولێر→ئیستانبول</td><td style="padding:10px;font-size:0.88rem;color:var(--text2)">١٢/٣/٢٠٢٥</td><td style="padding:10px;font-size:0.88rem;color:var(--green)">٨٩,٠٠٠ د.ع</td><td style="padding:10px"><span class="ticket-status status-active">تەواو</span></td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:10px;font-size:0.88rem">کونسێرت کۆتایی ساڵ</td><td style="padding:10px;font-size:0.88rem;color:var(--text2)">١/٣/٢٠٢٥</td><td style="padding:10px;font-size:0.88rem;color:var(--green)">٢٥,٠٠٠ د.ع</td><td style="padding:10px"><span class="ticket-status status-active">تەواو</span></td></tr>
+            <tr><td style="padding:10px;font-size:0.88rem">پارەدانەوەی بلیت</td><td style="padding:10px;font-size:0.88rem;color:var(--text2)">٢٥/٢/٢٠٢٥</td><td style="padding:10px;font-size:0.88rem;color:#F87171">-١٢,٠٠٠ د.ع</td><td style="padding:10px"><span class="ticket-status status-past">گەڕاوەتەوە</span></td></tr>
+          </table>
+        </div>
+      </div>
+      <div id="dashTab-saved" style="display:none">
+        <h2 style="font-weight:800;margin-bottom:2rem">ڕووداوە پاشەکەوتکراوەکان</h2>
+        <div class="grid-3" id="savedEvents"></div>
+      </div>
+      <div id="dashTab-settings" style="display:none">
+        <h2 style="font-weight:800;margin-bottom:2rem">ڕێکخستنەکان</h2>
+        <div class="card" style="max-width:500px">
+          <div style="display:flex;flex-direction:column;gap:1.2rem">
+            <div class="form-group"><label class="form-label">ناو</label><input class="form-input" value="ئارام مەحمود"></div>
+            <div class="form-group"><label class="form-label">ئیمەیڵ</label><input class="form-input" value="aram@example.com"></div>
+            <div class="form-group"><label class="form-label">ژمارەی مۆبایل</label><input class="form-input" value="+964 750 000 0000"></div>
+            <div class="form-group"><label class="form-label">شار</label>
+              <select class="form-input"><option>هەولێر</option><option>سلێمانی</option><option>دهۆک</option></select>
+            </div>
+            <button class="btn-primary" onclick="showToast('ڕێکخستنەکان پاشەکەوت کران ✓')">پاشەکەوت بکە</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ORGANIZER DASHBOARD ===================== -->
+<div class="page" id="page-organizer">
+  <div class="dashboard-layout">
+    <div class="sidebar">
+      <button class="sidebar-item active" onclick="switchOrgTab('overview',this)"><span class="sidebar-icon">📊</span> گشتی</button>
+      <button class="sidebar-item" onclick="switchOrgTab('create',this)"><span class="sidebar-icon">➕</span> ڕووداوی نوێ</button>
+      <button class="sidebar-item" onclick="switchOrgTab('sales',this)"><span class="sidebar-icon">💰</span> فرۆشتنەکان</button>
+      <button class="sidebar-item" onclick="switchOrgTab('withdraw',this)"><span class="sidebar-icon">🏦</span> دەرچوونی پارە</button>
+      <div style="border-top:1px solid var(--card-border);margin:1rem 0"></div>
+      <button class="sidebar-item" onclick="navigate('home')"><span class="sidebar-icon">🚪</span> دەرچوون</button>
+    </div>
+    <div class="dashboard-content">
+      <div id="orgTab-overview">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+          <div>
+            <h2 style="font-weight:800;font-size:1.5rem">داشبۆردی ڕێکخەر</h2>
+            <p style="color:var(--text2);font-size:0.88rem">بەرپرسایەتیەکانت بە ئامار</p>
+          </div>
+          <div class="live-dot">ڕاستەوخۆ نوێدەکرێتەوە</div>
+        </div>
+        <div class="grid-4" style="margin-bottom:2rem">
+          <div class="metric-card"><div class="metric-num">٤,٢٨٠</div><div class="metric-label">بلیتی فرۆشراو</div></div>
+          <div class="metric-card"><div class="metric-num">١٢.٤M</div><div class="metric-label">قازانجی گشتی (د.ع)</div></div>
+          <div class="metric-card"><div class="metric-num">٣</div><div class="metric-label">ڕووداوی چالاک</div></div>
+          <div class="metric-card"><div class="metric-num">٩٢٪</div><div class="metric-label">پڕبوونی کورسی</div></div>
+        </div>
+        <div class="chart-container" style="margin-bottom:2rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+            <h3 style="font-weight:700">گرافی قازانج — ٦ مانگی دوایین</h3>
+            <div class="live-dot">ڕاستەوخۆ</div>
+          </div>
+          <div class="chart-bars" id="revenueChart"></div>
+        </div>
+        <div class="chart-container"><h3 style="font-weight:700;margin-bottom:1.5rem">ڕووداوە چالاکەکان</h3><div style="overflow-x:auto"><table class="revenue-table" style="min-width:500px">
+            <thead><tr>
+              <th>ناوی ڕووداو</th><th>بەروار</th><th>بلیتی فرۆشراو</th><th>قازانج</th><th>دۆخ</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>کونسێرت بارزان کوردی</td><td>١٥/٤/٢٠٢٥</td><td>٨٠٠/١٢٠٠</td><td><span class="text-green">٢٠M د.ع</span></td><td><span class="ticket-status status-active">چالاک</span></td></tr>
+              <tr><td>یاری الیوحدة - دایته</td><td>٢٢/٤/٢٠٢٥</td><td>٣,٢٠٠/٥٠٠٠</td><td><span class="text-green">١٦M د.ع</span></td><td><span class="ticket-status status-active">چالاک</span></td></tr>
+              <tr><td>فێستیڤاڵ فیلمی هەولێر</td><td>١/٥/٢٠٢٥</td><td>٢٨٠/٦٠٠</td><td><span class="text-green">٥.٦M د.ع</span></td><td><span class="ticket-status status-active">چالاک</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="orgTab-create" style="display:none">
+        <h2 style="font-weight:800;margin-bottom:2rem">دروستکردنی ڕووداوی نوێ</h2>
+        <div class="card" style="max-width:600px">
+          <div style="display:flex;flex-direction:column;gap:1.2rem">
+            <div class="form-group"><label class="form-label">ناوی ڕووداو</label><input class="form-input" placeholder="ناوی ڕووداوەکە بنووسە..."></div>
+            <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div class="form-group"><label class="form-label">جۆری ڕووداو</label>
+                <select class="form-input"><option>🎤 کونسێرت</option><option>⚽ یاری</option><option>🎬 سینەما</option><option>🎪 فێستیڤاڵ</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">شار</label>
+                <select class="form-input"><option>هەولێر</option><option>سلێمانی</option><option>دهۆک</option></select>
+              </div>
+            </div>
+            <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div class="form-group"><label class="form-label">بەروار</label><input class="form-input" type="date"></div>
+              <div class="form-group"><label class="form-label">کات</label><input class="form-input" type="time"></div>
+            </div>
+            <div class="form-group"><label class="form-label">شوێن</label><input class="form-input" placeholder="ناوی شوێنەکە..."></div>
+            <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div class="form-group"><label class="form-label">نرخی بلیت (د.ع)</label><input class="form-input" type="number" placeholder="٢٥,٠٠٠"></div>
+              <div class="form-group"><label class="form-label">ژمارەی کورسی</label><input class="form-input" type="number" placeholder="٥٠٠"></div>
+            </div>
+            <div class="form-group"><label class="form-label">دەربارەی ڕووداو</label><textarea class="form-input" style="resize:vertical;min-height:100px" placeholder="وردەکاری ڕووداوەکە..."></textarea></div>
+            <button class="btn-primary" style="padding:12px" onclick="showToast('ڕووداو دروست کرا بە سەرکەوتوویی ✓')">دروستکردنی ڕووداو 🚀</button>
+          </div>
+        </div>
+      </div>
+      <div id="orgTab-sales" style="display:none">
+        <h2 style="font-weight:800;margin-bottom:2rem">ئامارەکانی فرۆشتن</h2>
+        <div class="card" style="overflow-x:auto"><table class="revenue-table" style="min-width:500px">
+            <thead><tr><th>بلیتی ژمارە</th><th>کڕیار</th><th>ڕووداو</th><th>بەروار</th><th>نرخ</th></tr></thead>
+            <tbody id="salesTable"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="orgTab-withdraw" style="display:none">
+        <h2 style="font-weight:800;margin-bottom:2rem">دەرچوونی پارە</h2>
+        <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
+          <div class="card">
+            <div class="metric-num" style="margin-bottom:0.5rem">١٢,٤٤٠,٠٠٠</div>
+            <div class="metric-label" style="margin-bottom:2rem">موجودی بەردەست (د.ع)</div>
+            <div class="form-group" style="margin-bottom:1rem"><label class="form-label">بڕی دەرچوون</label><input class="form-input" type="number" placeholder="٥,٠٠٠,٠٠٠"></div>
+            <div class="form-group" style="margin-bottom:1.5rem"><label class="form-label">ژمارەی بانک</label><input class="form-input" placeholder="IQ..."></div>
+            <button class="btn-primary" style="width:100%;padding:12px" onclick="showToast('داواکاری پارەدانەوە نێردرا ✓')">داواکردنی دەرچوون 💸</button>
+          </div>
+          <div>
+            <div class="card">
+              <h3 style="font-weight:700;margin-bottom:1rem">دەرچوونی پێشوو</h3>
+              <div class="summary-row"><span>١٠/٣/٢٠٢٥</span><span class="text-green">٣,٠٠٠,٠٠٠ د.ع</span></div>
+              <div class="summary-row"><span>٢٢/٢/٢٠٢٥</span><span class="text-green">٢,٥٠٠,٠٠٠ د.ع</span></div>
+              <div class="summary-row"><span>٥/٢/٢٠٢٥</span><span class="text-green">١,٨٠٠,٠٠٠ د.ع</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CHECKOUT PAGE ===================== -->
+<div class="page" id="page-checkout">
+  <div class="page-hero">
+    <div class="container">
+      <h1 class="section-title">پارەدان</h1>
+      <div class="steps" style="margin-top:2rem;max-width:500px">
+        <div class="step"><div class="step-circle done">١</div><div class="step-label">بلیت</div></div>
+        <div class="step-line done"></div>
+        <div class="step"><div class="step-circle active">٢</div><div class="step-label">پارەدان</div></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="step-circle pending">٣</div><div class="step-label">پشتڕاستکردن</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="padding-bottom:4rem">
+    <div class="checkout-layout">
+      <div>
+        <div class="card" style="margin-bottom:1.5rem">
+          <h3 style="font-weight:700;margin-bottom:1.5rem">شێوازی پارەدان</h3>
+          <div class="payment-methods">
+            <div class="payment-option selected" onclick="selectPayment(this)">
+              <div class="payment-radio"></div>
+              <span>💳</span>
+              <div>
+                <div style="font-weight:600;font-size:0.9rem">کارتی بانکی</div>
+                <div style="color:var(--text2);font-size:0.8rem">ویزا، ماسترکارد، تری کارد</div>
+              </div>
+            </div>
+            <div class="payment-option" onclick="selectPayment(this)">
+              <div class="payment-radio"></div>
+              <span>🏦</span>
+              <div>
+                <div style="font-weight:600;font-size:0.9rem">پارەدانی ناوخۆ</div>
+                <div style="color:var(--text2);font-size:0.8rem">AsiaHawala, ZainCash</div>
+              </div>
+            </div>
+            <div class="payment-option" onclick="selectPayment(this)">
+              <div class="payment-radio"></div>
+              <span>📱</span>
+              <div>
+                <div style="font-weight:600;font-size:0.9rem">جزدانی دیجیتاڵ</div>
+                <div style="color:var(--text2);font-size:0.8rem">FastPay, NassCash</div>
+              </div>
+            </div>
+          </div>
+          <div id="cardForm">
+            <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+              <div class="form-group" style="grid-column:1/-1"><label class="form-label">ژمارەی کارت</label><input class="form-input" placeholder="١٢٣٤ ٥٦٧٨ ٩٠١٢ ٣٤٥٦"></div>
+              <div class="form-group"><label class="form-label">بەروار</label><input class="form-input" placeholder="MM/YY"></div>
+              <div class="form-group"><label class="form-label">CVV</label><input class="form-input" placeholder="•••"></div>
+            </div>
+            <div class="form-group"><label class="form-label">ناوی خاوەنی کارت</label><input class="form-input" placeholder="ناوی تەواو..."></div>
+          </div>
+        </div>
+        <div class="secure-badge">
+          <span class="secure-icon">🔒</span>
+          پارەدانت پارێزراوە بە SSL 256-bit رمزگزاری
+        </div>
+      </div>
+      <div>
+        <div class="order-summary">
+          <h3 style="font-weight:700;margin-bottom:1.5rem">کورتەی بلیت</h3>
+          <div style="background:var(--green-dim);border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.2rem;display:flex;gap:12px;align-items:center">
+            <span style="font-size:2rem">🎤</span>
+            <div>
+              <div style="font-weight:700;font-size:0.9rem">کونسێرت بارزان کوردی</div>
+              <div style="color:var(--text2);font-size:0.8rem">١٥ی نیسان، ٢٠٢٥ — ٨ی شەو</div>
+              <div style="color:var(--text2);font-size:0.8rem">گەڵاری هەولێر</div>
+            </div>
+          </div>
+          <div class="discount-row">
+            <input class="coupon-input" placeholder="کۆدی تەخفیف...">
+            <button class="btn-primary" onclick="applyCoupon()">جێبەجێ بکە</button>
+          </div>
+          <div class="summary-row"><span>نرخی بلیت (×٢)</span><span>٥٠,٠٠٠ د.ع</span></div>
+          <div class="summary-row"><span>تێچووی خزمەتگوزاری</span><span>٢,٥٠٠ د.ع</span></div>
+          <div class="summary-row"><span>تەخفیف</span><span style="color:var(--green)">-٠ د.ع</span></div>
+          <div class="summary-row"><span>کۆی گشتی</span><span class="summary-total">٥٢,٥٠٠ د.ع</span></div>
+          <button class="btn-primary" style="width:100%;padding:14px;font-size:1rem;margin-top:1rem" onclick="confirmPayment()">
+            🔒 پشتڕاستکردنەوەی کڕین
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ABOUT PAGE ===================== -->
+<div class="page" id="page-about">
+  <div class="investor-hero">
+    <div class="container">
+      <div class="section-label">🏢 دەربارەمان</div>
+      <h1 class="section-title">ئێمە کێین؟</h1>
+      <p class="section-sub" style="max-width:600px">Bilet Technologies شرکەتێکی تەکنەلۆژیای کوردستانییە کە ئامانجی دیجیتاڵکردنی پرۆسەی فرۆشتن و کڕینی بلیتە لە کوردستانی عێراق</p>
+    </div>
+  </div>
+  <div class="container" style="padding-bottom:4rem">
+    <div class="why-layout two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:4rem;align-items:center">
+      <div>
+        <div class="section-label">🎯 ئامانج</div>
+        <h2 class="section-title">کێشەکە چییە؟</h2>
+        <p style="color:var(--text2);line-height:1.8">لە کوردستانی ئێراق هێشتا زۆرەمەلێ ڕووداو و گواستنەوەکان بلیتی کاغەزییان بەکاردەهێنن. ئەمەش دەبێتە هۆی چاڵەکیەکانی زیاتر:
+        <br><br>
+        • فرۆشی دووبارەی بلیت<br>
+        • نامانی ئامارەکان<br>
+        • گرانی بەڕێوەبردن<br>
+        • نازانرانی بەکارهێنەر
+        </p>
+      </div>
+      <div>
+        <div class="section-label">💡 چارەسەر</div>
+        <h2 class="section-title">چۆن چارەی دەکەین؟</h2>
+        <p style="color:var(--text2);line-height:1.8">بە پلاتفۆرمی Bilet:
+        <br><br>
+        • بلیتی دیجیتاڵ بە QR کۆدی تایبەت<br>
+        • سیستەمی پێشرەوی دژبەفرۆشی دووبارە<br>
+        • داشبۆردی ڕاستەوخۆ بۆ ڕێکخەران<br>
+        • ئامارەکانی ڕاستەوخۆ و شیکاری
+        </p>
+      </div>
+    </div>
+    <div style="margin-bottom:4rem">
+      <div class="section-label">👥 تیم</div>
+      <h2 class="section-title" style="margin-bottom:2rem">تیمەکەمان</h2>
+      <div class="grid-4">
+        <div class="team-card"><div class="team-avatar">ئ</div><div class="team-name">ئارام مەحمود</div><div class="team-role">بنەرێک و CEO</div></div>
+        <div class="team-card"><div class="team-avatar">ش</div><div class="team-name">شاناز عەلی</div><div class="team-role">CTO — تەکنەلۆژیا</div></div>
+        <div class="team-card"><div class="team-avatar">ه</div><div class="team-name">هاوژین ڕەشید</div><div class="team-role">CMO — مارکێتینگ</div></div>
+        <div class="team-card"><div class="team-avatar">س</div><div class="team-name">سروو ئیبراهیم</div><div class="team-role">CFO — دارایی</div></div>
+      </div>
+    </div>
+    <div class="cta-section">
+      <h2 class="cta-title">پێوەندیمان پێوەبکە</h2>
+      <p class="cta-sub">ئایا خەونی ناردنی بلیت ئۆنلاینت هەیە؟ پێمانی بڵێ</p>
+      <div class="cta-buttons">
+        <button class="btn-primary" style="padding:14px 32px" onclick="navigate('contact')">پەیوەندی → </button>
+        <button class="btn-ghost" style="padding:14px 32px" onclick="navigate('investors')">سەرمایەگذاران →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CONTACT PAGE ===================== -->
+<div class="page" id="page-contact">
+  <div class="page-hero">
+    <div class="container">
+      <div class="section-label">📬 پەیوەندی</div>
+      <h1 class="section-title">پەیوەندیمان پێوەبکە</h1>
+    </div>
+  </div>
+  <div class="container" style="padding-bottom:4rem">
+    <div class="why-layout two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start">
+      <div class="contact-form">
+        <div style="display:flex;flex-direction:column;gap:1.2rem">
+          <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <div class="form-group"><label class="form-label">ناو</label><input class="form-input" placeholder="ناوت..."></div>
+            <div class="form-group"><label class="form-label">ژمارەی مۆبایل</label><input class="form-input" placeholder="+964..."></div>
+          </div>
+          <div class="form-group"><label class="form-label">ئیمەیڵ</label><input class="form-input" placeholder="ئیمەیڵەکەت..."></div>
+          <div class="form-group"><label class="form-label">بابەت</label>
+            <select class="form-input"><option>پرسیاری گشتی</option><option>هاوکاری تەکنیکی</option><option>سەرمایەگذاری</option><option>هاوبەشی</option></select>
+          </div>
+          <div class="form-group"><label class="form-label">نامە</label><textarea class="form-input" rows="5" placeholder="نامەکەت بنووسە..."></textarea></div>
+          <button class="btn-primary" style="padding:12px" onclick="showToast('نامەکەت نێردرا! زووترین کاتێکدا وەڵامت دەدەینەوە ✓')">نێردن 📨</button>
+        </div>
+      </div>
+      <div>
+        <div class="why-card" style="margin-bottom:1.2rem">
+          <div class="why-icon">📧</div>
+          <div class="why-title">ئیمەیڵ</div>
+          <div class="why-text">hello@bilet.iq<br>support@bilet.iq</div>
+        </div>
+        <div class="why-card" style="margin-bottom:1.2rem">
+          <div class="why-icon">📞</div>
+          <div class="why-title">تەلەفۆن</div>
+          <div class="why-text">+964 750 000 0000<br>+964 770 000 0000</div>
+        </div>
+        <div class="why-card" style="margin-bottom:1.2rem">
+          <div class="why-icon">📍</div>
+          <div class="why-title">ناونیشان</div>
+          <div class="why-text">هەولێر، کوردستانی عێراق<br>ناوەندی تەکنۆلۆژیا، قوتابخانەی مینێرڤا</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(34,197,94,0.1),rgba(56,189,248,0.08));border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius);height:200px;display:flex;align-items:center;justify-content:center;font-size:3rem">🗺️</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== INVESTORS PAGE ===================== -->
+<div class="page" id="page-investors">
+  <div class="investor-hero">
+    <div class="container">
+      <div class="section-label">💼 سەرمایەگذاران</div>
+      <h1 class="section-title">سەرمایەگذاری لە <span class="highlight">Bilet</span></h1>
+      <p class="section-sub" style="max-width:600px">دەرفەتی گەشەپێدانی نهێنی — بازاڕی بلیتی کوردستان ئامادەی گۆڕانکاری دیجیتاڵییە</p>
+      <div style="display:flex;gap:12px;margin-top:2rem;flex-wrap:wrap">
+        <button class="btn-primary" style="padding:14px 28px" onclick="showToast('Pitch Deck ئێستا دەداگیرێت...')">📄 داگرتنی Pitch Deck</button>
+        <button class="btn-ghost" style="padding:14px 28px" onclick="showModal('investorModal')">📞 دانیشتنی وانانە</button>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="padding-bottom:4rem">
+    <div class="grid-4" style="margin-bottom:4rem">
+      <div class="metric-card"><div class="metric-num">$2.5M</div><div class="metric-label">بڕی داواکراو</div></div>
+      <div class="metric-card"><div class="metric-num">45M</div><div class="metric-label">بازاڕی گشتی (نوفوس)</div></div>
+      <div class="metric-card"><div class="metric-num">3x</div><div class="metric-label">گەشەی ساڵانە</div></div>
+      <div class="metric-card"><div class="metric-num">18mo</div><div class="metric-label">گەیشتن بە Break-even</div></div>
+    </div>
+
+    <div style="margin-bottom:4rem">
+      <div class="section-label">📊 Executive Summary</div>
+      <h2 class="section-title" style="margin-bottom:1rem">پوختەی ئاگادارکردنەوە</h2>
+      <div class="why-layout two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+        <div class="card">
+          <h3 style="font-weight:700;margin-bottom:1rem;color:var(--green)">بازاڕ</h3>
+          <p style="color:var(--text2);line-height:1.8;font-size:0.9rem">کوردستانی عێراق نزیکەی ٦ ملیۆن نوفوسی باژێڕی هەیە. لە ساڵی ٢٠٢٤دا زیاتر لە ٥٠٠ ڕووداوی گەورە هات بەرپاکرا — بەم پرۆسەیە بەلای زیاتر بلیتی کاغەزی بەکارهاتووە.</p>
+        </div>
+        <div class="card">
+          <h3 style="font-weight:700;margin-bottom:1rem;color:var(--green)">دەرامەتی مۆدێل</h3>
+          <p style="color:var(--text2);line-height:1.8;font-size:0.9rem">کوتاژی تێچووی خزمەتگوزاری ٥٪ لە هەر بلیتێک + هاوپارچەی ستریمی بازاڕکردن + SaaS بۆ ڕێکخەران</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:4rem">
+      <div class="section-label">📈 گەشەی پلان</div>
+      <h2 class="section-title" style="margin-bottom:2rem">ستراتیژی گەشە</h2>
+      <div class="grid-3">
+        <div class="why-card">
+          <div class="why-icon" style="background:rgba(34,197,94,0.15)">🌱</div>
+          <div class="why-title">فەیزی ١ — بنەما (ئێستا)</div>
+          <div class="why-text">هەولێر و سلێمانی — ٢٠٢٥ | MVP + ١٠ ڕێکخەری بنەرین</div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon" style="background:rgba(56,189,248,0.15)">🚀</div>
+          <div class="why-title">فەیزی ٢ — فراوانکردن</div>
+          <div class="why-text">کوردستانی گشتی — ٢٠٢٦ | فڕۆکە + پاس + گواستنەوە</div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon" style="background:rgba(251,191,36,0.15)">🌍</div>
+          <div class="why-title">فەیزی ٣ — ناوچەیی</div>
+          <div class="why-text">عێراق + ئێران + تورکیا — ٢٠٢٧ | ناوچەی ناوەڕاستی ئاسیا</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">💰 Funding Ask</div>
+      <h2 class="section-title" style="margin-bottom:2rem">بەکارهێنانی داراییەکان</h2>
+      <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--card-border)"><table class="revenue-table" style="background:var(--card);min-width:500px">
+        <thead><tr style="border-bottom:1px solid var(--card-border)">
+          <th style="padding:14px 20px">بابەت</th>
+          <th>بڕ</th>
+          <th>راستەوخۆ</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:14px 20px">گەشەپێدانی تەکنەلۆژیا</td><td>$800,000</td><td><div style="height:8px;background:var(--card-border);border-radius:4px;overflow:hidden"><div style="width:32%;height:100%;background:var(--green)"></div></div></td></tr>
+          <tr><td style="padding:14px 20px">مارکێتینگ و گەشە</td><td>$600,000</td><td><div style="height:8px;background:var(--card-border);border-radius:4px;overflow:hidden"><div style="width:24%;height:100%;background:#60A5FA"></div></div></td></tr>
+          <tr><td style="padding:14px 20px">تیم و دەستەوەرگرتن</td><td>$700,000</td><td><div style="height:8px;background:var(--card-border);border-radius:4px;overflow:hidden"><div style="width:28%;height:100%;background:#A78BFA"></div></div></td></tr>
+          <tr><td style="padding:14px 20px">کار و بنکەی داتا</td><td>$400,000</td><td><div style="height:8px;background:var(--card-border);border-radius:4px;overflow:hidden"><div style="width:16%;height:100%;background:#FB923C"></div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODALS ===================== -->
+<!-- Auth Modal -->
+<div class="modal-overlay" id="authModal" onclick="closeModalOnBg(event,'authModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">چوونەژوورەوە / تۆمارکردن</div>
+      <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchAuthTab('login',this)">چوونەژوورەوە</button>
+      <button class="tab" onclick="switchAuthTab('register',this)">تۆمارکردن</button>
+    </div>
+    <div id="authLogin">
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="form-group"><label class="form-label">ئیمەیڵ یان ژمارەی مۆبایل</label><input class="form-input" placeholder="ئیمەیڵ..."></div>
+        <div class="form-group"><label class="form-label">تێپەڕەوشە</label><input class="form-input" type="password" placeholder="••••••••"></div>
+        <button class="btn-primary" style="padding:12px" onclick="doLogin()">چوونەژوورەوە</button>
+        <div style="text-align:center;color:var(--text3);font-size:0.82rem">یان بەردەوام بە</div>
+        <button class="btn-ghost" style="padding:12px">🔗 Google</button>
+      </div>
+    </div>
+    <div id="authRegister" style="display:none">
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="form-group"><label class="form-label">ناوی یەکەم</label><input class="form-input" placeholder="ناو..."></div>
+          <div class="form-group"><label class="form-label">ناوی دووەم</label><input class="form-input" placeholder="بوکه..."></div>
+        </div>
+        <div class="form-group"><label class="form-label">ئیمەیڵ</label><input class="form-input" placeholder="ئیمەیڵ..."></div>
+        <div class="form-group"><label class="form-label">ژمارەی مۆبایل</label><input class="form-input" placeholder="+964..."></div>
+        <div class="form-group"><label class="form-label">تێپەڕەوشە</label><input class="form-input" type="password" placeholder="••••••••"></div>
+        <button class="btn-primary" style="padding:12px" onclick="doRegister()">دروستکردنی هەژمار</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Investor Modal -->
+<div class="modal-overlay" id="investorModal" onclick="closeModalOnBg(event,'investorModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">داواکردنی دانیشتنی وانانە</div>
+      <button class="modal-close" onclick="closeModal('investorModal')">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div class="form-group"><label class="form-label">ناو</label><input class="form-input" placeholder="ناوی تەواو..."></div>
+      <div class="form-group"><label class="form-label">شرکەت/فەند</label><input class="form-input" placeholder="ناوی شرکەتەکەت..."></div>
+      <div class="form-group"><label class="form-label">ئیمەیڵ</label><input class="form-input" placeholder="ئیمەیڵ..."></div>
+      <div class="form-group"><label class="form-label">بڕی سەرمایەی بەرچاو</label>
+        <select class="form-input"><option>$100K - $500K</option><option>$500K - $1M</option><option>$1M - $2.5M</option><option>$2.5M+</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">پرسیار یان تێبینی</label><textarea class="form-input" rows="3" placeholder="..."></textarea></div>
+      <button class="btn-primary" style="padding:12px" onclick="submitInvestorForm()">نێردن 📨</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============= DATA =============
+const lang = {
+  // ── کوردی سۆرانی ──
+  ku: {
+    'txt-badge': 'زیاتر لە ٥٠,٠٠٠ بلیت بەردەستە',
+    'txt-hero1':'بلیتی','txt-hero2':'خولیاکەت','txt-hero3':'ئێستا بکڕە',
+    'txt-hero-sub':'پلاتفۆرمی بلیتی دیجیتاڵ بۆ ڕووداو، فڕۆکە، پاس و زیاتر — بە QR کۆد، بە ئاسانی تەواو.',
+    'txt-searchbtn':'گەڕان',
+    'c1':'کونسێرت','c2':'یاری','c3':'فڕۆکە','c4':'پاس','c5':'سینەما',
+    's1':'بلیتی فرۆشراو','s2':'ڕووداوی چالاک','s3':'بەکارهێنەری تۆمارکراو','s4':'نرخاندنی بەکارهێنەر',
+    'dl1':'بەهاى داشکاندراو','dl2':'کێشەی تایبەت','dl3':'کەمترین نرخ بۆ بلیتی مەودای نزیک و دوور','dl4':'بینینی هەموو ✈',
+    'ev1':'نزیک تۆ','ev2':'ڕووداوەکانی نزیک','ev3':'ئەمشەو چی دەبێ لە هەولێر','ev4':'بینینی هەموو →',
+    'wy0':'تایبەتمەندییەکان','wy1':'بۆچی Bilet؟','wy2':'پلاتفۆرمی هاوچەرخ بۆ سەردەمی دیجیتاڵ',
+    'wy-a':'بلیت دیجیتاڵی بە QR کۆد','wy-b':'پارەدانەوەی ئاسایی و خێرا',
+    'wy-c':'سیستەمی دژ بە فرۆشی دووبارە','wy-d':'داشبۆردی ڕاستەوخۆ بۆ ڕێکخەر',
+    'wy-cta1':'دەستپێبکە ئێستا','wy-cta2':'فێربوون زیاتر',
+    'wc1':'بلیتی دیجیتاڵ','wc2':'پارەدان ئاسان','wc3':'پارێزراو ١٠٠٪','wc4':'داشبۆردی زیرەک',
+    'wct1':'QR کۆدی زیرەک بە هەموو وردەکاریەکانی بلیتەکەت','wct2':'کارت، کاش و جزدانی دیجیتاڵ — هەموو شێوازێک بەردەستە',
+    'wct3':'سیستەمی پێشرەوی دژ بە بلیتی دروستکراو و فرۆشی دووبارە','wct4':'ئامارەکانت بە ڕاستەوخۆ ببینە',
+    'ct0':'دەستپێکردن','ct1':'ئێستا تۆمار بکە','ct2':'کاری دیجیتاڵ بکە، بلیتەکانت ببە ئۆنلاین',
+    'ct3':'دەستپێبکە بە فرۆشتن 🎟','ct4':'زانیاری سەرمایەگذاران →',
+    'ft1':'پلاتفۆرمی بلیتی دیجیتاڵ بۆ کوردستان','ft-h1':'بلیتەکان','ft-h2':'کۆمپانیا','ft-h3':'یاسایی',
+    'ft-copy':'© ٢٠٢٥ Bilet Technologies. هەموو مافێک پارێزراوە.','ft-made':'دروستکراو بە ❤️ لە هەولێر، کوردستان',
+    'nav-home':'سەرەکی','nav-events':'ڕووداوەکان','nav-flights':'فڕۆکەکان','nav-buses':'پاسەکان',
+    'nav-about':'دەربارە','nav-investors':'سەرمایەگذاران',
+    'nav-dashboard-btn':'هەژمارم','nav-auth-btn':'چوونەژوورەوە',
+    'ep1':'ڕووداوەکان','ep2':'هەموو ڕووداوەکان','ep3':'لە کونسێرت تا یاری',
+    'fl1':'گەڕان بۆ فڕۆکە','fl2':'کەمترین نرخ، باشترین سەفەر',
+    'frl1':'لە کوێ','frl2':'بۆ کوێ','frl3':'بەروار','frl4':'مسافیر','frl5':'گەڕان',
+    'flot':'یەک لایەنە','flrt':'دووسویی',
+    'bu1':'گەڕان بۆ پاس','bu2':'گواستنەوەی ئاسان لە ناوەوەی کوردستان',
+    'db1':'بلیتەکانم','db2':'جزدان','db3':'پاشەکەوتکراو','db4':'ڕێکخستن','db5':'دەرچوون',
+    'db-t1':'بلیتەکانم','db-t2':'هەموو بلیتەکانت لە یەک شوێن',
+    'db-w1':'جزدانم','db-w2':'موجودی (د.ع)','db-w3':'مامەڵەی ئەم مانگە',
+    'db-w4':'پارەدانەوەی چاوەڕوان','db-w5':'مامەڵەی دوایین',
+    's1':'بلیتی فرۆشراو',
+  },
+  // ── کوردی بادینانی ──
+  ba: {
+    'txt-badge': 'پتر ژ 50,000 بلیتێن بەردەست',
+    'txt-hero1':'بلیتێن','txt-hero2':'خەونێن تە','txt-hero3':'نوکە بکڕە',
+    'txt-hero-sub':'سەکۆیەکا دیجیتاڵی بۆ بلیتێن ئاهەنگ، گەشتێن ئەسمانی، پاس و پتر — ب رێکا QR Code، ب ساناهی و تمام.',
+    'txt-searchbtn':'گەڕیان',
+    'c1':'کۆنسێرت','c2':'وەرزش','c3':'گەشتێن ئەسمانی','c4':'پاس','c5':'سینەما',
+    's1':'بلیت هاتینە فرۆشتن','s2':'چالاکیێن کارا','s3':'بکارهێنەرێن تۆمارکری','s4':'نیرخاندنا بکارهێنەران',
+    'dl1':'باشترین دەرفەت','dl2':'پێشنیارێن تایبەت','dl3':'کێمترین نرخ بۆ جهێن نێزیک و دویر','dl4':'بینینا هەمیان ✈',
+    'ev1':'ل نێزیک تە','ev2':'چالاکیێن نێزیک','ev3':'ئەڤ شەڤە ل هەولێرێ چ هەیە؟','ev4':'بینینا هەمیان ←',
+    'wy0':'تایبەتمەندی','wy1':'بۆچی بلیت؟','wy2':'سەکۆیەکا سەردەم بۆ چاخێ دیجیتاڵی',
+    'wy-a':'بلیتێن دیجیتاڵی ب QR Code','wy-b':'ڤەگێڕانا پارەی ب ساناهی و ب لەز',
+    'wy-c':'سیستەمێ رێگری ل دووبارەبوونا بلیتێ','wy-d':'پەنێلا رێکخەران ب شێوەیێ راستەوخۆ',
+    'wy-cta1':'نوکە دەستپێبکە','wy-cta2':'پتر بزانە',
+    'wc1':'بلیتێن دیجیتاڵی','wc2':'پارەدانەکا ساناهی','wc3':'100% پاراستی','wc4':'پەنێلا زیرەک',
+    'wct1':'QR Code یێ زیرەک دگەل هەمی پێزانینێن بلیتێ','wct2':'کارت، کاش و جزدانێن دیجیتاڵی — هەمی رێک بەردەستن',
+    'wct3':'سیستەمەکێ پێشکەفتی بۆ رێگری ل فێلبازی و دووبارەکرنا بلیتێ','wct4':'ئامارێن خۆ ب شێوەیێ راستەوخۆ ببینە',
+    'ct0':'دەستپێبکە','ct1':'نوکە تۆمار ببە','ct2':'بببە دیجیتاڵی، بلیتێن خۆ بکە ئۆنلاین',
+    'ct3':'دەست ب فرۆشتنێ بکە 🎟','ct4':'پێزانینێن وەبەرهێنانێ ←',
+    'ft1':'سەکۆیا بلیتێن دیجیتاڵی ل کوردستانێ','ft-h1':'بلیت','ft-h2':'کۆمپانیا','ft-h3':'یاسایی',
+    'ft-copy':'© 2025 بلیت تەکنۆلۆجی. هەمی ماف پاراستینە.','ft-made':'ب ❤️ ل هەولێر، کوردستان هاتیە دروستکرن',
+    'nav-home':'سەرەکی','nav-events':'چالاکی','nav-flights':'گەشتێن ئەسمانی','nav-buses':'پاس',
+    'nav-about':'دەربارەی مە','nav-investors':'وەبەرهێنەر',
+    'nav-dashboard-btn':'هژمارا من','nav-auth-btn':'چوونە ژوور',
+    'ep1':'چالاکی','ep2':'هەمی چالاکی','ep3':'ژ کۆنسێرتان تا وەرزش — هەمی بلیت ل ئێک جهن',
+    'fl1':'گەڕیان ل گەشتێن ئەسمانی','fl2':'باشترین نرخ، باشترین گەشت',
+    'frl1':'ژ لایێ','frl2':'بۆ لایێ','frl3':'رێکەوت','frl4':'گەشتیار','frl5':'گەڕیان',
+    'flot':'ئێک ئاراستە','flrt':'چوون و هاتن',
+    'bu1':'گەڕیان ل پاسان','bu2':'گەشتکرنا ساناهی د ناڤبەرا باژێرێن کوردستانێ دا',
+    'db1':'بلیتێن من','db2':'جزدان','db3':'پاراستی','db4':'رێکخستن','db5':'دەرکەفتن',
+    'db-t1':'بلیتێن من','db-t2':'هەمی بلیتێن تە ل ئێک جهن',
+    'db-w1':'جزدانێ من','db-w2':'باقیمەندە (IQD)','db-w3':'مامەلەیێن ئەڤێ مەهێ',
+    'db-w4':'پارەیێن ڤەگەڕیاین (ل چاوەڕێێ)','db-w5':'دوماهیک مامەلە',
+    's1':'بلیت هاتینە فرۆشتن',
+  },
+  // ── English ──
+  en: {
+    'txt-badge': 'Over 50,000 tickets available',
+    'txt-hero1':'Your','txt-hero2':'Dream Ticket','txt-hero3':'Buy Now',
+    'txt-hero-sub':'Digital ticket platform for events, flights, buses & more — with QR codes, easy and complete.',
+    'txt-searchbtn':'Search',
+    'c1':'Concert','c2':'Sports','c3':'Flights','c4':'Bus','c5':'Cinema',
+    's1':'Tickets Sold','s2':'Active Events','s3':'Registered Users','s4':'User Rating',
+    'dl1':'Best Deals','dl2':'Special Offers','dl3':'Lowest prices for near & far destinations','dl4':'View all ✈',
+    'ev1':'Near You','ev2':'Nearby Events','ev3':"What's happening tonight in Erbil",'ev4':'View all →',
+    'wy0':'Features','wy1':'Why Bilet?','wy2':'A modern platform for the digital age',
+    'wy-a':'Digital tickets with QR Code','wy-b':'Easy and fast refunds',
+    'wy-c':'Anti-duplicate ticket system','wy-d':'Real-time organizer dashboard',
+    'wy-cta1':'Get Started Now','wy-cta2':'Learn More',
+    'wc1':'Digital Tickets','wc2':'Easy Payment','wc3':'100% Secure','wc4':'Smart Dashboard',
+    'wct1':'Smart QR codes with all your ticket details','wct2':'Card, cash and digital wallets — all methods available',
+    'wct3':'Advanced anti-duplicate and fraud ticket system','wct4':'See your analytics in real-time',
+    'ct0':'Get Started','ct1':'Register Now','ct2':'Go digital, take your tickets online',
+    'ct3':'Start Selling 🎟','ct4':'Investor Info →',
+    'ft1':'Digital ticketing platform for Kurdistan','ft-h1':'Tickets','ft-h2':'Company','ft-h3':'Legal',
+    'ft-copy':'© 2025 Bilet Technologies. All rights reserved.','ft-made':'Made with ❤️ in Erbil, Kurdistan',
+    'nav-home':'Home','nav-events':'Events','nav-flights':'Flights','nav-buses':'Buses',
+    'nav-about':'About','nav-investors':'Investors',
+    'nav-dashboard-btn':'My Account','nav-auth-btn':'Sign In',
+    'ep1':'Events','ep2':'All Events','ep3':'From concerts to sports — all tickets in one place',
+    'fl1':'Search Flights','fl2':'Best prices, best trips',
+    'frl1':'From','frl2':'To','frl3':'Date','frl4':'Passengers','frl5':'Search',
+    'flot':'One Way','flrt':'Round Trip',
+    'bu1':'Search Buses','bu2':'Easy travel within Kurdistan',
+    'db1':'My Tickets','db2':'Wallet','db3':'Saved','db4':'Settings','db5':'Logout',
+    'db-t1':'My Tickets','db-t2':'All your tickets in one place',
+    'db-w1':'My Wallet','db-w2':'Balance (IQD)','db-w3':'Transactions this month',
+    'db-w4':'Pending Refunds','db-w5':'Recent Transactions',
+    's1':'Tickets Sold',
+  }
+};
+
+const events = [
+  {id:1,emoji:'🎤',title:'کونسێرت بارزان کوردی',titleEn:'Barazan Kurdish Concert',loc:'هەولێر — گەڵاری مەدینی',locEn:'Erbil — Midani Hall',rating:'٤.٩',age:'١٨+',price:'٢٥,٠٠٠'},
+  {id:2,emoji:'⚽',title:'الیوحدة یان دایته',titleEn:'Al-Ittihad vs Duhok',loc:'هەولێر — ستادیۆمی فرانسۆ',locEn:'Erbil — Franso Stadium',rating:'٤.٧',age:'٦+',price:'١٥,٠٠٠'},
+  {id:3,emoji:'🎬',title:'فێستیڤاڵی فیلمی هەولێر',titleEn:'Erbil Film Festival',loc:'سینەما پارک',locEn:'Cinema Park',rating:'٤.٨',age:'١٢+',price:'١٢,٠٠٠'},
+  {id:4,emoji:'🎪',title:'فێستیڤاڵی نەوروز',titleEn:'Nawroz Festival',loc:'پارکی شاری هەولێر',locEn:'Erbil City Park',rating:'٤.٦',age:'هەموو',price:'٥,٠٠٠'},
+  {id:5,emoji:'🎭',title:'شانۆی مەزن',titleEn:'Grand Theater Show',loc:'سلێمانی — تەلاری فەرهەنگی',locEn:'Sulaymaniyah — Cultural Hall',rating:'٤.٥',age:'١٢+',price:'٢٠,٠٠٠'},
+  {id:6,emoji:'🏀',title:'یاری باسکیتبۆل',titleEn:'Basketball Championship',loc:'هەولێر — سالۆنی وەرزشی',locEn:'Erbil — Sports Hall',rating:'٤.٣',age:'هەموو',price:'٨,٠٠٠'},
+  {id:7,emoji:'🎵',title:'شەوی موزیکی کلاسیک',titleEn:'Classical Music Night',loc:'دهۆک — تەاترۆ',locEn:'Duhok — Theater',rating:'٤.٨',age:'هەموو',price:'١٨,٠٠٠'},
+  {id:8,emoji:'🏋️',title:'پۆکازی MMA',titleEn:'MMA Championship',loc:'کرکوک — ستادیۆم',locEn:'Kirkuk — Stadium',rating:'٤.٢',age:'١٨+',price:'٣٠,٠٠٠'},
+];
+const flights = [
+  {airline:'✈️ Iraqi Airways',from:'هەولێر',to:'ئیستانبول',dep:'٠٨:٣٠',arr:'١١:٤٥',dur:'٣س ١٥خ',price:'٨٩,٠٠٠',direct:true},
+  {airline:'🛫 Fly Baghdad',from:'هەولێر',to:'ئیستانبول',dep:'١٤:٠٠',arr:'١٧:٣٠',dur:'٣س ٣٠خ',price:'٧٥,٠٠٠',direct:false},
+  {airline:'✈️ Turkish Airlines',from:'هەولێر',to:'ئیستانبول',dep:'٢٠:١٥',arr:'٢٣:٢٠',dur:'٣س ٠٥خ',price:'١٠٥,٠٠٠',direct:true},
+  {airline:'🛩 Pegasus',from:'هەولێر',to:'ئیستانبول',dep:'٠٥:٥٠',arr:'٠٩:٣٠',dur:'٣س ٤٠خ',price:'٦٨,٠٠٠',direct:false},
+];
+const buses = [
+  {company:'هەولێر ترانسپۆرت',from:'هەولێر',to:'سلێمانی',dep:'٠٧:٠٠',arr:'٠٩:٣٠',dur:'٢س ٣٠خ',price:'١٢,٠٠٠',seats:28},
+  {company:'گولدن باس',from:'هەولێر',to:'سلێمانی',dep:'٠٩:٣٠',arr:'١٢:٠٠',dur:'٢س ٣٠خ',price:'١٤,٠٠٠',seats:20},
+  {company:'ستار تراڤێل',from:'هەولێر',to:'سلێمانی',dep:'١٣:٠٠',arr:'١٥:٣٠',dur:'٢س ٣٠خ',price:'١١,٠٠٠',seats:35},
+];
+
+// ============= STATE =============
+let currentLang = 'ku';
+let currentPage = 'home';
+let passengers = 1;
+let busPassengers = 1;
+let selectedBusSeats = [];
+let ticketTab = 'active';
+let isLoggedIn = false;
+
+// ============= INIT =============
+window.onload = function(){
+  setTimeout(()=>{
+    document.getElementById('loadingOverlay').style.opacity='0';
+    document.getElementById('loadingOverlay').style.transition='opacity 0.5s';
+    setTimeout(()=>document.getElementById('loadingOverlay').style.display='none',500);
+  },1500);
+  setGreeting();
+  renderDeals();
+  renderEvents();
+  renderAllEvents();
+  renderFlights();
+  renderBuses();
+  renderTickets();
+  renderSavedEvents();
+  renderRevenueChart();
+  renderBusSeats();
+  renderSalesTable();
+  navigate('home');
+};
+
+function setGreeting(){
+  const h = new Date().getHours();
+  const greets = {
+    ku: h<12?'بەیانیت باش':h<18?'ڕۆژت باش':'شەوت باش',
+    ba: h<12?'بەیانیت باش':h<18?'ڕۆژت باش':'شەڤت باش',
+    en: h<12?'Good morning':h<18?'Good afternoon':'Good evening'
+  };
+  const names = { ku:'ئارام', ba:'ئارام', en:'Aram' };
+  const g = greets[currentLang] || greets.en;
+  const name = names[currentLang] || names.en;
+  const el = document.getElementById('txt-greeting');
+  if(el) el.textContent = `${g}، ${name} 👋`;
+}
+
+// ============= NAVIGATION =============
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  const navEl = document.getElementById('nav-'+page);
+  if(navEl) navEl.classList.add('active');
+  currentPage = page;
+  window.scrollTo(0,0);
+  // Animate elements
+  setTimeout(()=>{
+    document.querySelectorAll('#page-'+page+' .fade-in, #page-'+page+' .fade-up').forEach((el,i)=>{
+      el.style.animationDelay = (i*0.05)+'s';
+      el.style.animation = 'none';
+      el.offsetHeight;
+      el.style.animation = '';
+    });
+  },50);
+}
+
+function toggleMobileMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// ============= LANGUAGE =============
+function setLang(l){
+  currentLang = l;
+  // RTL for Kurdish (both dialects), LTR for English
+  const isRTL = l === 'ku' || l === 'ba';
+  document.documentElement.lang = l==='ku'?'ckb': l==='ba'?'kmr':'en';
+  document.documentElement.dir = isRTL?'rtl':'ltr';
+  document.body.classList.toggle('ltr', !isRTL);
+  // Update active state on all 3 buttons
+  document.getElementById('langKu').classList.toggle('active', l==='ku');
+  document.getElementById('langBa').classList.toggle('active', l==='ba');
+  document.getElementById('langEn').classList.toggle('active', l==='en');
+  // Update search placeholder
+  const placeholders = {
+    ku:'گەڕان بۆ بلیتی فڕۆکە، یاری، کونسێرت...',
+    ba:'گەڕیان ل بلیتێن گەشت، وەرزش، کۆنسێرت...',
+    en:'Search for flight, sports, concert tickets...'
+  };
+  document.querySelector('#heroSearch').placeholder = placeholders[l] || placeholders.en;
+  // Apply translations — fall back to 'en' for any missing key
+  const t = lang[l] || lang.en;
+  for(const [id, val] of Object.entries(t)){
+    const el = document.getElementById(id);
+    if(el) el.textContent = val;
+  }
+  setGreeting();
+  renderDeals();
+  renderEvents();
+  renderAllEvents();
+  // Update mobile menu lang buttons if they exist
+  const mmKu = document.getElementById('mm-langKu');
+  if(mmKu){
+    const mobileLangBtns = mmKu.parentElement.querySelectorAll('button');
+    mobileLangBtns.forEach((b,i) => {
+      const langs = ['ku','ba','en'];
+      b.style.background = (langs[i] === l) ? 'var(--green)' : 'var(--card)';
+      b.style.color = (langs[i] === l) ? '#000' : 'var(--text2)';
+      b.style.border = (langs[i] === l) ? 'none' : '1px solid var(--card-border)';
+    });
+  }
+}
+
+// ============= RENDER FUNCTIONS =============
+function renderDeals(){
+  const deals = [
+    {from:'هەولێر',to:'ئیستانبول',fromEn:'Erbil',toEn:'Istanbul',old:'١٢٠,٠٠٠',new:'٨٩,٠٠٠',discount:'٢٦٪',emoji:'✈️',color:'rgba(34,197,94,0.1)'},
+    {from:'هەولێر',to:'دوبای',fromEn:'Erbil',toEn:'Dubai',old:'١٨٠,٠٠٠',new:'١٤٢,٠٠٠',discount:'٢١٪',emoji:'🌴',color:'rgba(56,189,248,0.1)'},
+    {from:'سلێمانی',to:'بەغدا',fromEn:'Sulaymaniyah',toEn:'Baghdad',old:'٦٠,٠٠٠',new:'٤٤,٠٠٠',discount:'٢٧٪',emoji:'🏙️',color:'rgba(251,191,36,0.1)'},
+  ];
+  document.getElementById('dealsGrid').innerHTML = deals.map(d=>`
+    <div class="deal-card" onclick="navigate('flights')">
+      <div class="deal-badge">-${d.discount}</div>
+      <div class="deal-card-img-placeholder" style="background:linear-gradient(135deg,${d.color},rgba(255,255,255,0.02))">${d.emoji}</div>
+      <div class="deal-card-body">
+        <div class="deal-route">
+          ${currentLang==='ku'?d.from:d.fromEn}
+          <span class="deal-arrow">→</span>
+          ${currentLang==='ku'?d.to:d.toEn}
+        </div>
+        <div class="deal-old">${d.old} د.ع</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem">
+          <div class="deal-new">${d.new}<span class="deal-currency">د.ع</span></div>
+          <button class="btn-buy" style="width:auto;padding:8px 16px" onclick="event.stopPropagation();navigate('checkout')">
+            ${currentLang==='ku'?'بینینی بلیتەکان':'View Tickets'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderEvents(container='eventsGrid', limit=4){
+  const el = document.getElementById(container);
+  if(!el) return;
+  const data = events.slice(0, limit);
+  el.innerHTML = data.map(e=>`
+    <div class="event-card" onclick="navigate('checkout')">
+      <div class="event-img">
+        ${e.emoji}
+        <div class="event-rating">⭐ ${e.rating}</div>
+        <div class="event-age">${e.age}</div>
+      </div>
+      <div class="event-body">
+        <div class="event-title">${(currentLang==='ku'||currentLang==='ba')?e.title:e.titleEn}</div>
+        <div class="event-loc">📍 ${(currentLang==='ku'||currentLang==='ba')?e.loc:e.locEn}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem">
+          <div style="font-weight:800;color:var(--green)">${e.price} <span style="font-size:0.75rem">د.ع</span></div>
+        </div>
+        <button class="btn-buy" onclick="event.stopPropagation();navigate('checkout')">${currentLang==='en'?'Buy Ticket':currentLang==='ba'?'بلیت بکڕە':'بلیت بکڕە'}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAllEvents(){
+  renderEvents('allEventsGrid', 8);
+  const pag = document.getElementById('pagination');
+  if(pag) pag.innerHTML = [1,2,3,4,5].map(n=>`
+    <button onclick="paginate(this,${n})" style="width:36px;height:36px;border-radius:10px;${n===1?'background:var(--green);color:#000;border:none;':'background:var(--card);border:1px solid var(--card-border);color:var(--text2);'} cursor:pointer;font-family:var(--font);font-weight:600;transition:var(--transition)" class="pag-btn">${n}</button>
+  `).join('');
+}
+
+function paginate(btn, n){
+  document.querySelectorAll('.pag-btn').forEach(b=>{
+    b.style.background='var(--card)';b.style.color='var(--text2)';b.style.border='1px solid var(--card-border)';
+  });
+  btn.style.background='var(--green)';btn.style.color='#000';btn.style.border='none';
+}
+
+function filterEvents(){ showToast(currentLang==='ku'?'فلتەر جێبەجێ کرا ✓':'Filter applied ✓'); }
+
+function renderFlights(){
+  const el = document.getElementById('flightResults');
+  if(!el) return;
+  el.innerHTML = flights.map(f=>`
+    <div class="flight-result">
+      <div>
+        <div class="airline-logo">${f.airline.split(' ')[0]}</div>
+        <div class="airline-name">${f.airline.split(' ').slice(1).join(' ')}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:2rem;flex:1;justify-content:center">
+        <div style="text-align:center">
+          <div class="flight-time">${f.dep}</div>
+          <div class="flight-city">${f.from}</div>
+        </div>
+        <div class="flight-line">
+          <div class="flight-duration">${f.dur}</div>
+          <div class="flight-bar"><div class="flight-bar-line"></div></div>
+          <div class="direct-badge">${f.direct?(currentLang==='en'?'Direct':'ڕاستەوخۆ'):(currentLang==='en'?'1 Stop':'یەک وەستگە')}</div>
+        </div>
+        <div style="text-align:center">
+          <div class="flight-time">${f.arr}</div>
+          <div class="flight-city">${f.to}</div>
+        </div>
+      </div>
+      <div class="flight-price-col">
+        <div class="flight-price">${f.price}</div>
+        <div class="flight-price-note">د.ع / مسافیر</div>
+        <button class="btn-primary" onclick="navigate('checkout')" style="font-size:0.82rem;padding:8px 16px">${currentLang==='ku'?'بلیت بکڕە':'Book Now'}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderBuses(){
+  const el = document.getElementById('busResults');
+  if(!el) return;
+  el.innerHTML = buses.map((b,i)=>`
+    <div class="flight-result">
+      <div>
+        <div class="airline-logo">🚌</div>
+        <div class="airline-name">${b.company}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:2rem;flex:1;justify-content:center">
+        <div style="text-align:center">
+          <div class="flight-time">${b.dep}</div>
+          <div class="flight-city">${b.from}</div>
+        </div>
+        <div class="flight-line">
+          <div class="flight-duration">${b.dur}</div>
+          <div class="flight-bar"><div class="flight-bar-line"></div></div>
+          <div class="direct-badge" style="color:var(--text2)">${b.seats} ${currentLang==='ku'?'کورسی بەردەست':'seats left'}</div>
+        </div>
+        <div style="text-align:center">
+          <div class="flight-time">${b.arr}</div>
+          <div class="flight-city">${b.to}</div>
+        </div>
+      </div>
+      <div class="flight-price-col">
+        <div class="flight-price">${b.price}</div>
+        <div class="flight-price-note">د.ع</div>
+        <button class="btn-primary" onclick="selectBus(${i})" style="font-size:0.82rem;padding:8px 16px">${currentLang==='ku'?'هەڵبژێرە':'Select'}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectBus(i){
+  document.getElementById('busSeatSection').style.display='block';
+  document.getElementById('busSeatSection').scrollIntoView({behavior:'smooth'});
+}
+
+function renderBusSeats(){
+  const grid = document.getElementById('busSeatGrid');
+  if(!grid) return;
+  const takenSeats = [3,7,12,18,23,27,32];
+  let html='';
+  for(let row=1;row<=9;row++){
+    html+=`<div class="seat ${takenSeats.includes(row*4-3)?'taken':'available'}" onclick="selectBusSeat(this,'${row}A')">${row}A</div>`;
+    html+=`<div class="seat ${takenSeats.includes(row*4-2)?'taken':'available'}" onclick="selectBusSeat(this,'${row}B')">${row}B</div>`;
+    html+=`<div style="width:12px"></div>`;
+    html+=`<div class="seat ${takenSeats.includes(row*4-1)?'taken':'available'}" onclick="selectBusSeat(this,'${row}C')">${row}C</div>`;
+    html+=`<div class="seat ${takenSeats.includes(row*4)?'taken':'available'}" onclick="selectBusSeat(this,'${row}D')">${row}D</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function selectBusSeat(el, seat){
+  if(el.classList.contains('taken')) return;
+  el.classList.toggle('selected');
+  el.classList.toggle('available');
+  const idx = selectedBusSeats.indexOf(seat);
+  if(idx>-1) selectedBusSeats.splice(idx,1); else selectedBusSeats.push(seat);
+  document.getElementById('selectedBusSeats').textContent = selectedBusSeats.length?selectedBusSeats.join(', '):'هیچ کورسیێک هەڵنەبژێردراوە';
+  document.getElementById('busSeatCount').textContent = toKurdishNum(selectedBusSeats.length);
+  document.getElementById('busTotalPrice').textContent = toKurdishNum(selectedBusSeats.length*12000)+' د.ع';
+}
+
+function renderTickets(){
+  const el = document.getElementById('ticketsList');
+  if(!el) return;
+  const activeTickets = [
+    {title:'کونسێرت بارزان کوردی',date:'١٥/٤/٢٠٢٥',loc:'گەڵاری هەولێر',seat:'A-٢٣',price:'٢٥,٠٠٠',emoji:'🎤'},
+    {title:'یاری الیوحدة - دایته',date:'٢٢/٤/٢٠٢٥',loc:'ستادیۆم فرانسۆ',seat:'B-١١',price:'١٥,٠٠٠',emoji:'⚽'},
+  ];
+  const pastTickets = [
+    {title:'فڕۆکە هەولێر→ئیستانبول',date:'١٢/٣/٢٠٢٥',loc:'فرودگەی هەولێر',seat:'٢٢F',price:'٨٩,٠٠٠',emoji:'✈️'},
+  ];
+  const data = ticketTab==='active'?activeTickets:pastTickets;
+  el.innerHTML = data.length?data.map(t=>`
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:1.5rem">${t.emoji}</span>
+          <div>
+            <div style="font-weight:700">${t.title}</div>
+            <div style="color:var(--text2);font-size:0.8rem">${t.loc}</div>
+          </div>
+        </div>
+        <span class="ticket-status ${ticketTab==='active'?'status-active':'status-past'}">${ticketTab==='active'?'چالاک':'تەواو'}</span>
+      </div>
+      <div class="ticket-body">
+        <div>
+          <div style="color:var(--text2);font-size:0.8rem;margin-bottom:4px">بەروار</div>
+          <div style="font-weight:700">${t.date}</div>
+          <div style="color:var(--text2);font-size:0.8rem;margin-top:8px;margin-bottom:4px">کورسی</div>
+          <div style="font-weight:700">${t.seat}</div>
+          <div style="color:var(--green);font-weight:800;margin-top:8px">${t.price} د.ع</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <div class="ticket-qr">▦</div>
+          <button class="btn-buy" style="width:auto;padding:6px 14px;font-size:0.78rem" onclick="showToast('QR کۆد داگیرا ✓')">📥 داگرتن</button>
+          ${ticketTab==='active'?`<button class="btn-ghost" style="padding:6px 14px;font-size:0.78rem" onclick="showToast('داواکاری هەڵوەشاندنەوە نێردرا')">هەڵوەشاندنەوە</button>`:''}
+        </div>
+      </div>
+    </div>
+  `).join(''):`<div style="text-align:center;padding:3rem;color:var(--text3)">🎟 هیچ بلیتێک نییە</div>`;
+}
+
+function renderSavedEvents(){
+  const el = document.getElementById('savedEvents');
+  if(!el) return;
+  el.innerHTML = events.slice(0,3).map(e=>`
+    <div class="event-card">
+      <div class="event-img">${e.emoji}<div class="event-rating">⭐ ${e.rating}</div></div>
+      <div class="event-body">
+        <div class="event-title">${e.title}</div>
+        <div class="event-loc">📍 ${e.loc}</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.8rem">
+          <div style="font-weight:800;color:var(--green)">${e.price} د.ع</div>
+        </div>
+        <button class="btn-buy" onclick="navigate('checkout')">بلیت بکڕە</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderRevenueChart(){
+  const el = document.getElementById('revenueChart');
+  if(!el) return;
+  const data = [{m:'تشرینی یەکەم',v:65},{m:'تشرینی دووەم',v:82},{m:'کانونی یەکەم',v:78},{m:'کانونی دووەم',v:95},{m:'شوبات',v:110},{m:'ئازار',v:132}];
+  const max = Math.max(...data.map(d=>d.v));
+  el.innerHTML = data.map(d=>`
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" style="height:${(d.v/max)*100}%" data-val="${d.v}M د.ع"></div>
+      <div class="chart-label">${d.m.substring(0,6)}</div>
+    </div>
+  `).join('');
+}
+
+function renderSalesTable(){
+  const el = document.getElementById('salesTable');
+  if(!el) return;
+  const sales = [
+    ['#BL-00١٢٣','ئارام م.','کونسێرت بارزان','١٥/٣','٢٥,٠٠٠'],
+    ['#BL-00١٢٤','شاناز ع.','یاری الیوحدة','٢٢/٣','١٥,٠٠٠'],
+    ['#BL-00١٢٥','هاوژین ڕ.','فڕۆکە EBL-IST','١/٤','٨٩,٠٠٠'],
+    ['#BL-00١٢٦','کارزان س.','فێستیڤاڵ فیلم','٥/٤','١٢,٠٠٠'],
+    ['#BL-00١٢٧','دیلان ب.','کونسێرت بارزان','١٥/٤','٢٥,٠٠٠'],
+  ];
+  el.innerHTML = sales.map(s=>`
+    <tr>
+      ${s.map((v,i)=>`<td style="padding:12px 16px;font-size:0.85rem;${i===4?'color:var(--green);font-weight:700':''}">${v}</td>`).join('')}
+    </tr>
+  `).join('');
+}
+
+// ============= UI INTERACTIONS =============
+function setCategory(el, cat){
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  if(cat==='flights') navigate('flights');
+  else if(cat==='buses') navigate('buses');
+  else navigate('events');
+}
+
+function doSearch(){
+  const q = document.getElementById('heroSearch').value;
+  if(q) navigate('events');
+  else showToast(currentLang==='ku'?'تکایە شتێک بنووسە':'Please enter a search term');
+}
+
+function voiceSearch(){
+  showToast(currentLang==='ku'?'🎙 دەنگت گوێدەگرم...':'🎙 Listening...');
+}
+
+function swapCities(){
+  const a = document.getElementById('fromCity');
+  const b = document.getElementById('toCity');
+  [a.value, b.value] = [b.value, a.value];
+}
+
+function setTripType(type){
+  document.getElementById('flOneWay').classList.toggle('active', type==='one');
+  document.getElementById('flRound').classList.toggle('active', type==='round');
+}
+
+function changePassengers(d){
+  passengers = Math.max(1, Math.min(9, passengers+d));
+  document.getElementById('passengerCount').textContent = toKurdishNum(passengers);
+}
+
+function changeBusPassengers(d){
+  busPassengers = Math.max(1, Math.min(9, busPassengers+d));
+  document.getElementById('busPassCount').textContent = toKurdishNum(busPassengers);
+}
+
+function searchFlights(){ showToast(currentLang==='ku'?'فڕۆکەکان گەڕانی بۆ کرا ✓':'Flights searched ✓'); }
+function searchBuses(){
+  document.getElementById('busResults').innerHTML = '';
+  renderBuses();
+  showToast(currentLang==='ku'?'پاسەکان گەڕانی بۆ کرا ✓':'Buses found ✓');
+}
+
+function switchDashTab(tab, btn){
+  ['tickets','wallet','saved','settings'].forEach(t=>{
+    const el = document.getElementById('dashTab-'+t);
+    if(el) el.style.display = t===tab?'block':'none';
+  });
+  document.querySelectorAll('#page-dashboard .sidebar-item').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function switchOrgTab(tab, btn){
+  ['overview','create','sales','withdraw'].forEach(t=>{
+    const el = document.getElementById('orgTab-'+t);
+    if(el) el.style.display = t===tab?'block':'none';
+  });
+  document.querySelectorAll('#page-organizer .sidebar-item').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function switchTicketTab(tab, btn){
+  ticketTab = tab;
+  document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTickets();
+}
+
+function switchAuthTab(tab, btn){
+  document.getElementById('authLogin').style.display = tab==='login'?'block':'none';
+  document.getElementById('authRegister').style.display = tab==='register'?'block':'none';
+  document.querySelectorAll('#authModal .tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function selectPayment(el){
+  document.querySelectorAll('.payment-option').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function applyCoupon(){
+  showToast(currentLang==='ku'?'کۆدی تەخفیف جێبەجێ کرا ✓':'Coupon applied ✓');
+}
+
+function confirmPayment(){
+  showToast(currentLang==='ku'?'🎉 کڕین پشتڕاست کرا! بلیتەکەت نێردرا':'🎉 Purchase confirmed! Ticket sent');
+  setTimeout(()=>navigate('dashboard'),1500);
+}
+
+function doLogin(){
+  isLoggedIn = true;
+  closeModal('authModal');
+  document.getElementById('nav-auth-btn').style.display = 'none';
+  document.getElementById('nav-dashboard-btn').style.display = 'flex';
+  showToast(currentLang==='en'?'Welcome back to Bilet! 👋':currentLang==='ba'?'Bilet ب خێر بێیت! 👋':'بەخێربێیت بۆ Bilet! 👋');
+}
+
+function doRegister(){
+  isLoggedIn = true;
+  closeModal('authModal');
+  document.getElementById('nav-auth-btn').style.display = 'none';
+  document.getElementById('nav-dashboard-btn').style.display = 'flex';
+  showToast(currentLang==='en'?'Account created! 🎉':currentLang==='ba'?'هژمار هاتیە دروستکرن! 🎉':'هەژمارت دروست کرا! 🎉');
+}
+
+function submitInvestorForm(){
+  closeModal('investorModal');
+  showToast(currentLang==='ku'?'داواکارییەکەت نێردرا! بە زووانی پەیوەندیت پێدەکەین ✓':'Request sent! We\'ll contact you soon ✓');
+}
+
+// ============= MODALS =============
+function showModal(id){ document.getElementById(id).classList.add('open') }
+function closeModal(id){ document.getElementById(id).classList.remove('open') }
+function closeModalOnBg(e, id){ if(e.target===document.getElementById(id)) closeModal(id) }
+
+// ============= TOAST =============
+function showToast(msg, dur=3000){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+// ============= UTILS =============
+function toKurdishNum(n){
+  const map = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
+  return String(n).replace(/[0-9]/g, d=>map[d]);
+}
+
+// ============= SCROLL EFFECTS =============
+window.addEventListener('scroll', ()=>{
+  const nav = document.getElementById('navbar');
+  nav.style.background = window.scrollY>50?'rgba(11,18,32,0.98)':'rgba(11,18,32,0.85)';
+});
+
+// ============= INTERSECTION OBSERVER =============
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.opacity='1';
+      e.target.style.transform='translateY(0)';
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.card, .why-card, .event-card, .deal-card, .metric-card').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(20px)';
+  el.style.transition='opacity 0.5s ease, transform 0.5s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease';
+  observer.observe(el);
+});
+
+const today = new Date().toISOString().split('T')[0];
+document.querySelectorAll('input[type="date"]').forEach(i => { i.value = today; });
+</script>
+</body>
+</html>
